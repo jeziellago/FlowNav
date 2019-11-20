@@ -58,9 +58,9 @@ dependencies {
 
 # Usage
 
-## Declare your feature-module`s main activity
+## Declare your feature-module's main activity
 
-On Each feature-module on your project you need to add `EntryFlowNav` annotation to infor what activity is the feature-module entry point, the annotation receive an constant that server to identify the acitivty on [FlowNavActions](#initialize-flownav-on-application)
+On Each feature-module on your project you need to add `EntryFlowNav` annotation to infor what activity is the feature-module entry point, the annotation receive an constant to identify the activity on [FlowNavActions](#initialize-flownav-on-application)
 
 >`@EntryFlowNav(ACTIVITY_FEATURE_MODULE_IDENTIFY)`
 
