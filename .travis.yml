@@ -1,0 +1,16 @@
+language: android
+jdk:
+  - oraclejdk8
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-29.0.2
+    - android-29
+before_install:
+  - yes | sdkmanager "platforms;android-29"
+  - chmod +x gradlew
+  - chmod +x gradle/wrapper/gradle-wrapper.jar
+script:
+   - ./gradlew :annotation:build :processor:build
+   - ./gradlew :app:assembleRelease

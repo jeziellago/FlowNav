@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.flownav.firstaction">
+    <application>
+        <activity android:name=".FirstActionActivity"/>
+    </application>
+</manifest>

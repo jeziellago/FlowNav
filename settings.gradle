@@ -1,0 +1,2 @@
+include ':app', ':annotation', ':processor', ':firstaction', ':navigation', ':secondaction', ':router'
+rootProject.name='My Application'

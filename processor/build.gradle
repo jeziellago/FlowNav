@@ -1,0 +1,47 @@
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'maven-publish'
+
+kapt {
+    generateStubs = true
+    correctErrorTypes = true
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${buildDir.absolutePath}/tmp/kapt/main/kotlinGenerated/"
+        }
+    }
+}
+
+ext {
+    autoservice = '1.0-rc4'
+    incap_processor = '0.2'
+    kotlinpoet = '1.4.4'
+}
+
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    annotationProcessor("net.ltgt.gradle.incap:incap-processor:$incap_processor")
+
+    compileOnly project(':annotation')
+    compileOnly("net.ltgt.gradle.incap:incap:$incap_processor")
+
+    implementation "com.google.auto.service:auto-service:$autoservice"
+
+    kapt project(":annotation")
+    kapt "com.google.auto.service:auto-service:$autoservice"
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.flownav'
+            artifactId = 'processor'
+            version = '0.1'
+            from components.java
+        }
+    }
+}
