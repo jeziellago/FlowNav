@@ -1,4 +1,4 @@
-# FlowNav
+# FlowNav &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](https://api.travis-ci.org/jeziellago/FlowNav.svg)
 
 FlowNav is a mobile library for Android that help and provider an better way to make multi-modules navigation.
 
