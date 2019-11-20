@@ -12,5 +12,5 @@ before_install:
   - chmod +x gradlew
   - chmod +x gradle/wrapper/gradle-wrapper.jar
 script:
-   - ./gradlew :annotation:build :processor:build
-   - ./gradlew :app:assembleRelease
+   - ./gradlew build
+   - ./gradlew publishToMavenLocal
