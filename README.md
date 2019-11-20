@@ -60,7 +60,7 @@ dependencies {
 
 ## Declare your feature-module`s main activity
 
-On Each feature-module on your project you need to add `EntryFlowNav` annotation to infor what activity is the feature-module entry point, the annotation receive an constant that server to identify the acitivty on [FlowNavActions](#configure-the-flownavmain)
+On Each feature-module on your project you need to add `EntryFlowNav` annotation to infor what activity is the feature-module entry point, the annotation receive an constant that server to identify the acitivty on [FlowNavActions](#initialize-flownav-on-application)
 
 >`@EntryFlowNav(ACTIVITY_FEATURE_MODULE_IDENTIFY)`
 
@@ -83,7 +83,7 @@ Each function need to receive an `Context` and if needed you can pass an `arg` o
 >
 >`fun startFeature(context: Context, arg: Any)`
 
-To get the expected intent for the navigation we need to use a context extension function named `open` who expect the [activity identify constant](#declare-your-feature-module-s-main-activity)
+To get the expected intent for the navigation we need to use a context extension function named `open` who expect the [activity identify constant](#declare-your-feature-modules-main-activity)
 
 >`context.open(ACTIVITY_FEATURE_MODULE_IDENTIFY)`
 
