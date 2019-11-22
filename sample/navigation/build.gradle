@@ -28,7 +28,9 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // com.flownav:router:VERSION
     api project(':router')
 
     testImplementation 'junit:junit:4.12'

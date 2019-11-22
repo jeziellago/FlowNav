@@ -28,8 +28,13 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // com.flownav:annotation:VERSION
     implementation project(':annotation')
+
     implementation project(':navigation')
+
+    // com.flownav:processor:VERSION
     kapt project(':processor')
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
