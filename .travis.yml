@@ -14,4 +14,3 @@ before_install:
   - chmod +x gradle/wrapper/gradle-wrapper.jar
 script:
    - ./gradlew :app:build
-   - ./gradlew :annotation:publishToMavenLocal :processor:publishToMavenLocal :router:publishToMavenLocal
