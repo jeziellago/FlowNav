@@ -28,7 +28,7 @@ apply plugin: 'kotlin-kapt'
 ```groovy
 dependencies {
 
-    kapt "com.github.jeziellago.FlowNav:processor:$flownav_version"
+    kapt "com.flownav:processor:$flownav_version"
 }
 ```
 
@@ -37,7 +37,7 @@ dependencies {
 ```groovy
 dependencies {
 
-    implementation "com.github.jeziellago.FlowNav:annotation:$flownav_version"
+    implementation "com.flownav:annotation:$flownav_version"
 }
 ```
 
@@ -46,7 +46,7 @@ dependencies {
 ```groovy
 dependencies {
 
-    api "com.github.jeziellago.FlowNav:router:$flownav_version"
+    api "com.flownav:router:$flownav_version"
 }
 ```
 
