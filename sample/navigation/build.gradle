@@ -29,9 +29,14 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "androidx.core:core-ktx:$core_ktx"
 
     // com.flownav:router:VERSION
     api project(':router')
+
+    // com.flownav:routerfragment:VERSION
+    api project(':routerfragment')
 
     testImplementation 'junit:junit:4.12'
 

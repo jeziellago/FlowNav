@@ -3,6 +3,7 @@ package com.flownav.secondaction
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.flownav.annotation.EntryFlowNav
+import com.flownav.navigation.NavigationRouter
 import com.flownav.navigation.NavigationRoutes.FEATURE_2
 import com.flownav.navigation.SecondActionArgKeys
 import kotlinx.android.synthetic.main.second_action_activity.*
@@ -15,5 +16,9 @@ class SecondActionActivity : AppCompatActivity() {
         setContentView(R.layout.second_action_activity)
         val text = "SECOND: ${intent.extras?.getString(SecondActionArgKeys.arg1)}"
         txtSecond.text = text
+
+        buttonOpenThird.setOnClickListener {
+            startActivity(NavigationRouter.openFeature3(this))
+        }
     }
 }

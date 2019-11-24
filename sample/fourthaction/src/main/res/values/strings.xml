@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">fourtaction</string>
+    <string name="fourth_action">fourth action</string>
+    <string name="go_to_fifth">Go to fifth</string>
+</resources>

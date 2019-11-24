@@ -30,6 +30,9 @@ dependencies {
     implementation project(':navigation')
     implementation project(':firstaction')
     implementation project(':secondaction')
+    implementation project(':thirdaction')
+    implementation project(':fourthaction')
+    implementation project(':fifthaction')
 
     // com.flownav:annotation:VERSION
     implementation project (':annotation')

@@ -21,6 +21,7 @@ ext {
     junit = '4.12'
     androidx_junit = '1.1.1'
     espresso_core = '3.2.0'
+    navigation_version = '2.2.0-rc02'
 }
 
 allprojects {
