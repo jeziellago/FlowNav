@@ -7,7 +7,6 @@ import com.flownav.annotation.EntryFlowNav
 import com.flownav.navigation.NavigationRouter
 import com.flownav.navigation.NavigationRoutes.FEATURE_1
 
-
 @EntryFlowNav(FEATURE_1)
 class FirstActionActivity : AppCompatActivity() {
 

@@ -9,7 +9,7 @@ import com.flownav.navigation.NavigationFragmentRoutes
 import kotlinx.android.synthetic.main.fragment_fourth.*
 
 @EntryFragmentFlowNav(NavigationFragmentRoutes.FourthFragment.ACTION_NAME, NavigationFragmentRoutes.FourthFragment.FRAGMENT_ID)
-class FourthFragment: Fragment(R.layout.fragment_fourth) {
+class FourthFragment : Fragment(R.layout.fragment_fourth) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

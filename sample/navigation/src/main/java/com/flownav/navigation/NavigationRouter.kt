@@ -1,6 +1,5 @@
 package com.flownav.navigation
 
-
 import android.content.Context
 import com.flownav.navigation.NavigationRoutes.FEATURE_1
 import com.flownav.navigation.NavigationRoutes.FEATURE_2
