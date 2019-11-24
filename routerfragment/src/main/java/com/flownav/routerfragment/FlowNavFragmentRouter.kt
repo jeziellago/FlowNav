@@ -17,23 +17,32 @@
 package com.flownav.routerfragment
 
 open class FlowNavFragmentRouter {
+
     internal val fragmentsToAdd = mutableMapOf<Int, FragmentNavInfo>()
     internal var startDestination: Int = 0
 
+    private lateinit var navDestinationMap: Map<String, Pair<String, Int>>
+
+    fun init(destinationMap: Map<String, Pair<String, Int>>) {
+        navDestinationMap = destinationMap
+    }
+
     fun addDestination(
         isStartDestination: Boolean = false,
-        id: Int,
-        className: String
-    ): FragmentNavInfo {
-        if (isStartDestination) {
-            startDestination = id
-        }
+        destinationKey: String
+    ): FragmentNavInfo? {
 
-        return FragmentNavInfo(
-            id,
-            className
-        ).apply {
-            fragmentsToAdd[id] = this
+        return navDestinationMap[destinationKey]?.let {
+            if (isStartDestination) {
+                startDestination = it.second
+            }
+
+            return FragmentNavInfo(
+                it.second,
+                it.first
+            ).apply {
+                fragmentsToAdd[id] = this
+            }
         }
     }
 

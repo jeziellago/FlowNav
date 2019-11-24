@@ -28,9 +28,9 @@ import com.flownav.routerfragment.extension.getGraphOr
 
 object FlowNavFragmentNavigation {
 
-    fun startNavGraphOn(
-        activity: FragmentActivity,
+    fun FlowNavFragmentRouter.workWithNavGraphOf(
         @IdRes navHost: Int,
+        activity: FragmentActivity,
         navigateFragment: FlowNavFragmentRouter.() -> Unit
     ) {
         val navHostFragment = activity.supportFragmentManager.findFragmentById(navHost) as NavHostFragment
@@ -39,7 +39,7 @@ object FlowNavFragmentNavigation {
             NavGraph(NavGraphNavigator(NavigatorProvider()))
         }
 
-        val navFrag = FlowNavFragmentRouter()
+        val navFrag = this
         navFrag.navigateFragment()
 
         navFrag.fragmentsToAdd.forEach {
