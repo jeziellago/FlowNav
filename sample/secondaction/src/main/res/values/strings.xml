@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SecondAction</string>
+    <string name="open_thirdaction">Open ThirdAction</string>
 </resources>
