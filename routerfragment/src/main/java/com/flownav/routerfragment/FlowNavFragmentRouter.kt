@@ -16,12 +16,16 @@
 
 package com.flownav.routerfragment
 
+import androidx.navigation.fragment.NavHostFragment
+
 open class FlowNavFragmentRouter {
 
     internal val fragmentsToAdd = mutableMapOf<Int, FragmentNavInfo>()
     internal var startDestination: Int = 0
+    internal lateinit var navHostFragment: NavHostFragment
 
-    private lateinit var navDestinationMap: Map<String, Pair<String, Int>>
+    lateinit var navDestinationMap: Map<String, Pair<String, Int>>
+        private set
 
     fun init(destinationMap: Map<String, Pair<String, Int>>) {
         navDestinationMap = destinationMap
@@ -46,7 +50,25 @@ open class FlowNavFragmentRouter {
         }
     }
 
-    infix fun FragmentNavInfo.withActions(destinationActions: HashMap<Int, Int>.() -> Unit) {
-        fragmentsToAdd[id] = this.apply { actions.apply(destinationActions) }
+    infix fun FragmentNavInfo.withActions(destinationActions: HashMap<String, String>.() -> Unit) {
+        fragmentsToAdd[id] = this.apply {
+            val destinations: HashMap<String, String> = hashMapOf()
+            destinations.destinationActions()
+
+            if (destinations.isNotEmpty()) {
+                val newActions: HashMap<Int, Int> = hashMapOf()
+
+                destinations.forEach {
+                    navDestinationMap[it.key]?.second?.let { source ->
+                        navDestinationMap[it.value]?.second?.let {  destination ->
+                            newActions.put(source, destination)
+                        }
+                    }
+                }
+
+                actions.putAll(newActions)
+            }
+
+        }
     }
 }

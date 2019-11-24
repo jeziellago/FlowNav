@@ -61,5 +61,12 @@ object FlowNavFragmentNavigation {
         navGraph.startDestination = navFrag.startDestination
 
         navHostFragment.navController.graph = navGraph
+        this.navHostFragment = navHostFragment
+    }
+
+    fun FlowNavFragmentRouter.navigateTo(destination: String) {
+        this.navDestinationMap[destination]?.second?.let {
+            this.navHostFragment.navController.navigate(it)
+        }
     }
 }
