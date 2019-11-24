@@ -1,4 +1,5 @@
-include ':app', ':firstaction', ':navigation', ':secondaction', ':annotation', ':processor', ':router', ':annotation'
+include ':app', ':firstaction', ':navigation', ':secondaction', ':annotation', ':processor', ':router', ':annotation', ':routerfragment'
 project(":annotation").projectDir = file("../annotation")
 project(":processor").projectDir = file("../processor")
 project(":router").projectDir = file("../router")
+project(":routerfragment").projectDir = file("../routerfragment")

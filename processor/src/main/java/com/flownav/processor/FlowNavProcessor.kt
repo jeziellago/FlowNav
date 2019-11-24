@@ -16,6 +16,7 @@
 package com.flownav.processor
 
 import com.flownav.annotation.EntryFlowNav
+import com.flownav.annotation.EntryFragmentFlowNav
 import com.flownav.annotation.FlowNavMain
 import com.google.auto.service.AutoService
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
@@ -31,6 +32,7 @@ import javax.tools.Diagnostic
 @IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.ISOLATING)
 @SupportedAnnotationTypes(
     "com.flownav.annotation.EntryFlowNav",
+    "com.flownav.annotation.EntryFragmentFlowNav",
     "com.flownav.annotation.FlowNavMain"
 )
 @SupportedOptions(FlowNavProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME)
@@ -83,7 +85,33 @@ class FlowNavProcessor : AbstractProcessor() {
                     )
                 }
             }
+
+        annotatedEntryFragmentFlowNav(environment, targetParentPath)
+
         return true
+    }
+
+    private fun annotatedEntryFragmentFlowNav(
+        environment: RoundEnvironment,
+        targetParentPath: String
+    ) {
+        val annotatedElements = environment.getElementsAnnotatedWith(EntryFragmentFlowNav::class.java)
+
+        annotatedElements
+            .forEach { element ->
+                val action = element.getAnnotation(EntryFragmentFlowNav::class.java).actionName
+                val fragmentId = element.getAnnotation(EntryFragmentFlowNav::class.java).fragmentId
+                val packageName = processingEnv.elementUtils.getPackageOf(element).toString()
+                if (element.kind.isClass) {
+                    val className = element.simpleName.toString()
+                    FlowNavActionsBuilder.writeTarget(
+                        targetParentPath,
+                        action,
+                        "$packageName.$className",
+                        fragmentId
+                    )
+                }
+            }
     }
 
     private tailrec fun getModulePath(currentPath: String, targetModule: String): String {

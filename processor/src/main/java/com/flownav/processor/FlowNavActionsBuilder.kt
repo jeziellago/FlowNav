@@ -41,7 +41,14 @@ class FlowNavActionsBuilder(
                 HashMap<String, String>().apply {
                 }//endmap
             }
+            private val fragmentMap by lazy {
+                HashMap<String, Pair<String, Int>>().apply {
+                }//endfragmentMap
+            }
+            
             fun get(): Map<String, String> = map
+            
+            fun getFragments(): Map<String, Pair<String, Int>> = fragmentMap
         }
     """.trimIndent()
 
@@ -50,10 +57,18 @@ class FlowNavActionsBuilder(
         action: String,
         actionType: String
     ) {
-        val content = file.readText().replace(
-            "}//endmap",
-            "\n\t\t\tthis[\"$action\"] = \"$actionType\"\n\t\t}//endmap"
-        )
+        val content = if(actionType.contains("*")) {
+            val split: List<String> = actionType.split("*")
+            file.readText().replace(
+                "}//endfragmentMap",
+                "\n\t\t\tthis[\"$action\"] = Pair(\"${split[0]}\", R.id.${split[1]})\n\t\t}//endfragmentMap"
+            )
+        } else {
+            file.readText().replace(
+                "}//endmap",
+                "\n\t\t\tthis[\"$action\"] = \"$actionType\"\n\t\t}//endmap"
+            )
+        }
         file.writeText(content)
     }
 
@@ -62,11 +77,18 @@ class FlowNavActionsBuilder(
         fun writeTarget(
             parentPath: String,
             action: String,
-            actionType: String
+            actionType: String,
+            fragmentId: String? = null
         ) {
             File(parentPath, action).apply {
                 parentFile.mkdirs()
-                writeText("$actionType")
+
+                var textToWrite = actionType
+                textToWrite += fragmentId?.let {
+                    "*$fragmentId"
+                }
+
+                writeText(textToWrite)
             }
         }
     }
