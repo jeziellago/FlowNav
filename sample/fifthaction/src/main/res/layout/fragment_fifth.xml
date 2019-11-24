@@ -6,21 +6,12 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/txtFourth"
+        android:id="@+id/txtFifth"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/fourth_action"
+        android:text="@string/fifth_action"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/buttonGoToFifth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/txtFourth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/go_to_fifth"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
