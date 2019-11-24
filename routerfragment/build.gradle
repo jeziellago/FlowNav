@@ -28,7 +28,7 @@ android {
 }
 
 ext {
-    navigation_version = '2.1.0-rc01'
+    navigation_version = '2.2.0-rc02'
 }
 
 dependencies {

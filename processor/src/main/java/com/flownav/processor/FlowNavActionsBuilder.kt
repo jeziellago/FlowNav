@@ -86,7 +86,7 @@ class FlowNavActionsBuilder(
                 var textToWrite = actionType
                 textToWrite += fragmentId?.let {
                     "*$fragmentId"
-                }
+                }.orEmpty()
 
                 writeText(textToWrite)
             }
