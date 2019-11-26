@@ -203,7 +203,7 @@ addDestination(
 )
 ```
 
-### Using NavigationFragmentRouter init function on navHost Activity
+### Using NavigationFragmentRouter initNavGraphOn function on navHost Activity
 
 ```kotlin
 @EntryFlowNav(NavigationRoutes.FEATURE_3)
@@ -218,6 +218,34 @@ class ActivityStart : AppCompatActivity() {
 }
 
 ```
+
+To navigate beteween the fragments we need to use a extension function for `FlowNavFragmentRouter` called `navigateTo` who receive the constant that you used on `@EntryFragmentFlowNav` annotation to identify the destination of the fragment and a lifecycleOwner.
+
+```kotlin
+object NavigationFragmentRouter : FlowNavFragmentRouter() {
+    ...
+
+    fun navigateToDestinationFragment(lifecycleOwner: LifecycleOwner) {
+        navigateTo(DESTINATION_NAME, lifecycleOwner)
+    }
+}
+```
+
+```kotlin
+class OriginFragment : Fragment() {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        ...
+
+        buttonGoToDestination.setOnClickListener {
+            NavigationFragmentRouter.navigateToDestinationFragment(this)
+        }
+    }
+}
+
+```
+
+
 ## Initialize NavigationFragmentRouter on Application
 
 To initialize the NavigationFragmentRouter library we need put the `@FlowNavMain` annotation on our Application class in app module and initialize our Router.

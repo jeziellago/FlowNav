@@ -15,7 +15,7 @@ class FourthFragment : Fragment(R.layout.fragment_fourth) {
         super.onViewCreated(view, savedInstanceState)
 
         buttonGoToFifth.setOnClickListener {
-            NavigationFragmentRouter.navigateToFifth()
+            NavigationFragmentRouter.navigateToFifth(this)
         }
     }
 }

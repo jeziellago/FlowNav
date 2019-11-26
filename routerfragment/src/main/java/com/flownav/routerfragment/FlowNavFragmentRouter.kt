@@ -16,13 +16,10 @@
 
 package com.flownav.routerfragment
 
-import androidx.navigation.fragment.NavHostFragment
-
 open class FlowNavFragmentRouter {
 
     internal val fragmentsToAdd = mutableMapOf<Int, FragmentNavInfo>()
-    internal var startDestination: Int = 0
-    internal lateinit var navHostFragment: NavHostFragment
+    internal var startDestination: Int? = null
 
     lateinit var navDestinationMap: Map<String, Pair<String, Int>>
         private set

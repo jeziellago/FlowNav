@@ -47,7 +47,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.flownav'
             artifactId = 'routerfragment'
-            version = '0.1'
+            version = '0.2'
             artifact("$buildDir/outputs/aar/routerfragment-release.aar")
         }
     }
