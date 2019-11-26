@@ -17,56 +17,71 @@
 package com.flownav.routerfragment
 
 import androidx.annotation.IdRes
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavAction
-import androidx.navigation.NavGraph
-import androidx.navigation.NavGraphNavigator
-import androidx.navigation.NavigatorProvider
+import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.*
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.flownav.routerfragment.extension.getGraphOr
 
-object FlowNavFragmentNavigation {
+fun FlowNavFragmentRouter.workWithNavGraphOf(
+    @IdRes navHost: Int,
+    activity: FragmentActivity,
+    navigateFragment: FlowNavFragmentRouter.() -> Unit
+) {
+    val navHostFragment = activity.supportFragmentManager.findFragmentById(navHost) as NavHostFragment
 
-    fun FlowNavFragmentRouter.workWithNavGraphOf(
-        @IdRes navHost: Int,
-        activity: FragmentActivity,
-        navigateFragment: FlowNavFragmentRouter.() -> Unit
-    ) {
-        val navHostFragment = activity.supportFragmentManager.findFragmentById(navHost) as NavHostFragment
-
-        val navGraph = navHostFragment.navController.getGraphOr {
-            NavGraph(NavGraphNavigator(NavigatorProvider()))
-        }
-
-        val navFrag = this
-        navFrag.navigateFragment()
-
-        navFrag.fragmentsToAdd.forEach {
-            navGraph.addDestination(
-                FragmentNavigator(
-                    activity,
-                    activity.supportFragmentManager,
-                    navHost
-                ).createDestination().apply {
-                    id = it.key
-                    className = it.value.className
-
-                    it.value.actions.forEach {
-                        putAction(it.key, NavAction(it.value))
-                    }
-                })
-        }
-
-        navGraph.startDestination = navFrag.startDestination
-
-        navHostFragment.navController.graph = navGraph
-        this.navHostFragment = navHostFragment
+    val navGraph = navHostFragment.navController.getGraphOr {
+        NavGraph(NavGraphNavigator(NavigatorProvider()))
     }
 
-    fun FlowNavFragmentRouter.navigateTo(destination: String) {
-        this.navDestinationMap[destination]?.second?.let {
-            this.navHostFragment.navController.navigate(it)
+    val navFrag = this
+    navFrag.navigateFragment()
+
+    navFrag.fragmentsToAdd.forEach {
+        navGraph.addDestination(
+            FragmentNavigator(
+                activity,
+                activity.supportFragmentManager,
+                navHost
+            ).createDestination().apply {
+                id = it.key
+                className = it.value.className
+
+                it.value.actions.forEach {
+                    putAction(it.key, NavAction(it.value))
+                }
+            })
+    }
+
+    navFrag.startDestination?.let { navGraph.startDestination = it }
+
+    navHostFragment.navController.graph = navGraph
+    cleanRouter(navFrag)
+}
+
+fun FlowNavFragmentRouter.navigateTo(destination: String, lifecycleOwner: LifecycleOwner) {
+
+    val navController: NavController? = when(lifecycleOwner) {
+        is Fragment -> {
+            lifecycleOwner.findNavController()
+        }
+        is FragmentActivity -> {
+            lifecycleOwner.supportFragmentManager.fragments.first().findNavController()
+        }
+        else -> {
+            error("Navigate only on Fragment or FragmentActivity")
         }
     }
+
+    this.navDestinationMap[destination]?.second?.let {
+        navController?.navigate(it)
+    }
+}
+
+internal fun cleanRouter(navigateFragment: FlowNavFragmentRouter) {
+    navigateFragment.fragmentsToAdd.clear()
+    navigateFragment.startDestination = null
 }
