@@ -1,8 +1,8 @@
 # FlowNav &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](https://api.travis-ci.org/jeziellago/FlowNav.svg)
 
-FlowNav is a mobile library for Android that help and provider an better way to make multi-modules navigation.
+FlowNav is a mobile library for Android that helps and provider a better way to make multi-modules navigation.
 
->**FlowNav is a annotation processor and tool to make navigation simple**.
+>**FlowNav is an annotation processor and tool to make navigation simple**.
 
 # Setup
 
@@ -59,17 +59,17 @@ dependencies {
 }
 ```
 
->**`Router and Fragment Router` dependency is imported only on `navigation module`**.
+>**`Router and Fragment Router` dependency is imported only on the `navigation module`**.
 >
->**The `app module` only need the `Annotation` dependency**
+>**The `app module` only needs `Annotation` dependency**
 >
 >**All `feature-module` will import the `Processor` and `Annotation` dependencies**
 
 # Activity Usage
 
-## Declare your feature-module's main activity
+## Declare your feature modules main activity
 
-On Each feature-module on your project you need to add `EntryFlowNav` annotation to infor what activity is the feature-module entry point, the annotation receive an constant to identify the activity on [FlowNavActions](#initialize-flownav-on-application)
+On Each feature-module on your project, you need to add `EntryFlowNav` annotation to inform what activity is the feature-module entry point, the annotation receives a constant to identify the activity on [FlowNavActions](#initialize-flownav-on-application).
 
 >`@EntryFlowNav(ACTIVITY_FEATURE_MODULE_IDENTIFY)`
 
@@ -82,21 +82,21 @@ class MyFirstOneActivity : AppCompatActivity() { ...
 
 ## Create your Router class
 
-On navigation module, create your router extending  `FlowNavRouter` that router is responsable to export navigation`s functions.
+On the navigation module, create your router extending `FlowNavRouter` that router is responsible to export navigation functions.
 
 >`object NavRouter: FlowNavRouter() { ...`
 
-Each function need to receive an `Context` and if needed you can pass an `arg` on function`s arguments
+Each function needs to receive a `Context`, and if needed, you can pass an `arg` on functions arguments.
 
 >`fun startFeature(context: Context)`
 >
 >`fun startFeature(context: Context, arg: Any)`
 
-To get the expected intent for the navigation we need to use a context extension function named `open` who expect the [activity identify constant](#declare-your-feature-modules-main-activity)
+To get the expected intent for the navigation, we need to use a context extension function named `open` who expects the [activity identifier constant](#declare-your-feature-modules-main-activity)
 
 >`context.open(ACTIVITY_FEATURE_MODULE_IDENTIFY)`
 
-If you need to pass some arguments to intent we will use `withParams` infix fun
+If you need to pass some arguments to the intent, we will use `withParams` infix fun.
 
 >`fun startFeature(context: Context, arg: Any) withParams { ...`
 
@@ -116,11 +116,11 @@ object MyNavRouter : FlowNavRouter() {
 
 ## Initialize FlowNav on Application
 
-To initialize the FlowNav library we need put the `@FlowNavMain` annotation on our Application class in app module and initialize our Router.
+To initialize the FlowNav library, we need to put the `@FlowNavMain` annotation on our Application class in the app module and initialize our Router.
 
->The `@FlowNavMain` serve to identify the Application class to the library
+> The `@FlowNavMain` helps to identify the Application class to the library
 >
->To initialize our Router we will call the `init` function from `FlowNavRouter` who will receiver `FlowNavActions` who is a generated class that provides the className of each activity who is annotated with `@EntryFlowNav`
+> To initialize our Router, we will call the `init` function from `FlowNavRouter`, who will receiver `FlowNavActions`, a generated class that provides the className of each activity annotated with `@EntryFlowNav`.
 
 ```kotlin
 @FlowNavMain
@@ -137,7 +137,7 @@ class MyApplication : Application() {
 
 > The FlowNav library for now only support work with fragment when used with Navigation Component
 
-To work with fragment is similiar to acitvity, we need to annotate our fragment with `EntryFragmentFlowNav`, the annotation receive two parameters, the first is the constant to identify the destination of the fragment and the second is an name of the resource ID for the fragment, the resource ID should be created on `navigation module`. 
+Working with a fragment is similar to activity. We need to annotate our fragment with `EntryFragmentFlowNav`, who receives two parameters: the first is a constant to identify the fragment destination, and the second is the name identifier to resource ID for the fragment. The resource ID should be created on the `navigation module`. 
 
 >`@EntryFragmentFlowNav(DESTINATION_NAME, FRAGMENT_ID)`
 
@@ -153,17 +153,17 @@ class SampleFragment: Fragment() { ...
 
 ## Create your Fragment Router class
 
-On navigation module, create your router extending  `FlowNavFragmentRouter` that router is responsable to export navigation`s functions.
+On the navigation module, create your router extending  `FlowNavFragmentRouter` that router is used to export navigation functions.
 
 >`object NavigationFragmentRouter : FlowNavFragmentRouter() { ...`
 
 The FlowNav expose an extension function called `workWithNavGraphOf` for `FlowNavFragmentRouter`, this function receive the `navHost resource id`, an `activity` and a DSL for `FlowNavFragmentRouter's functions`.
 
-The `workWithNavGraphOf` will add new destinations on `navHost graph` or if the `navHost` don't have a `navGraph` he will create a `navGraph` a nd inflate on `navHost`
+The `workWithNavGraphOf` will add new destinations on `navHost graph` or if the `navHost` don't have a `navGraph` he will create a `navGraph`  and inflate on `navHost`
 
 The `FlowNavFragmentRouter` expose an function called `addDestination`, this function receive the flag `isStartDestination` and the `destinationKey`.
 
-You will use the `addDestination` function when you need create an new destination for the navGraph, the flag `isStartDestination` is to inform if the destination is the startDestination of the navGraph, the `destinationKey` is the constant that you used on `@EntryFragmentFlowNav` annotation to identify the destination of the fragment.
+You will use the `addDestination` function when you need to create a new destination for the navGraph. The flag `isStartDestination` is to inform if the destination is the `startDestination` of the navGraph. The `destinationKey` is a constant that you used on `@EntryFragmentFlowNav` annotation to identify the destination of the fragment.
 
 ```kotlin
 object NavigationFragmentRouter : FlowNavFragmentRouter() {
@@ -179,7 +179,8 @@ object NavigationFragmentRouter : FlowNavFragmentRouter() {
 }
 ```
 
-If you need to create an action for the destination you will use `withActions` infix fun, the function is an HashMap where you will pass the fragment of the origin and the fragment destination, in both you will pass the constant that you used on `@EntryFragmentFlowNav` annotation to identify the destination of the fragment 
+If you need to create an action for the destination you will use `withActions` infix fun, the function is a HashMap where you will pass the fragment of the origin and the fragment destination, in both you will pass the constant that you used on `@EntryFragmentFlowNav` annotation to identify the destination of the fragment.
+
 
 ```kotlin
 addDestination(...)?. withActions {
@@ -219,7 +220,7 @@ class ActivityStart : AppCompatActivity() {
 
 ```
 
-To navigate beteween the fragments we need to use a extension function for `FlowNavFragmentRouter` called `navigateTo` who receive the constant that you used on `@EntryFragmentFlowNav` annotation to identify the destination of the fragment and a lifecycleOwner.
+To navigate between the fragments, we need to use an extension function for `FlowNavFragmentRouter` called `navigateTo` who receive the constant that you used on `@EntryFragmentFlowNav` annotation to identify the destination of the fragment and a lifecycleOwner.
 
 ```kotlin
 object NavigationFragmentRouter : FlowNavFragmentRouter() {
@@ -248,11 +249,11 @@ class OriginFragment : Fragment() {
 
 ## Initialize NavigationFragmentRouter on Application
 
-To initialize the NavigationFragmentRouter library we need put the `@FlowNavMain` annotation on our Application class in app module and initialize our Router.
+To initialize the NavigationFragmentRouter library, we need to put the `@FlowNavMain` annotation on our Application class in the app module and initialize our Router.
 
->The `@FlowNavMain` serve to identify the Application class to the library
+>The `@FlowNavMain` works to identify the Application class to the library.
 >
->To initialize our Router we will call the `init` function from `FlowNavFragmentRouter` who will receiver `FlowNavActions` who is a generated class that provides the className and id of each fragment who is annotated with `@EntryFragmentFlowNav`
+> To initialize our Router, we will call the `init` function from `FlowNavFragmentRouter`, who will receiver `FlowNavActions`. `FlowNavActions` is a generated class that provides the className and id of each fragment, that is annotated with `@EntryFragmentFlowNav`.
 
 ```kotlin
 @FlowNavMain
