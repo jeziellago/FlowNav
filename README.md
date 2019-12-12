@@ -78,19 +78,19 @@ To initialize the FlowNav library, we need to put the `@FlowNavMain` annotation 
 
 > The `@FlowNavMain` helps to identify the Application class to the library
 >
-> To initialize our Router, we will call the `start` function from `FlowNavApp`, who will receiver `navMap()` and `navMapFragment()`, extensions that provides the className of each activity annotated with `@EntryFlowNav` and fragments with `@EntryFragmentFlowNav`.
+> To initialize our Router, we will call the `start` function from `FlowNavApp`, who will receiver `navActivityMap()` and `navFragmentMap()`, extensions that provides the className of each activity annotated with `@EntryFlowNav` and fragments with `@EntryFragmentFlowNav`.
 
 ```kotlin
 import com.flownav.router.FlowNavApp
-import com.flownav.router.navMap
-import com.flownav.router.navMapFragment
+import com.flownav.router.navActivityMap
+import com.flownav.router.navFragmentMap
 
 @FlowNavMain
 class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        FlowNavApp.start(navMap(), navMapFragment())
+        FlowNavApp.start(navActivityMap(), navFragmentMap())
     }
 }
 ```
