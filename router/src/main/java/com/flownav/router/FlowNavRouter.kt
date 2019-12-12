@@ -43,7 +43,7 @@ abstract class FlowNavRouter {
     ) = Intent(Intent.ACTION_VIEW)
         .setClassName(
             packageName,
-            FlowNavApp.getIntentMap()[destinationKey]
+            FlowNavApp.getActivityMap()[destinationKey]
                 ?: throw IllegalArgumentException("$destinationKey not found.")
         )
 

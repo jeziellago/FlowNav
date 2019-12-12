@@ -2,10 +2,10 @@ package com.flownav.router
 
 import android.content.Context
 
-fun <K, V> Context.navMap(): Map<K, V> {
-    throw Throwable("Not implemented!!")
+fun <K, V> Context.navActivityMap(): Map<K, V> {
+    throw Throwable("This implementation should be generated at compile time.")
 }
 
-fun <K, V> Context.navMapFragment(): Map<K, V> {
-    throw Throwable("Not implemented!!")
+fun <K, V> Context.navFragmentMap(): Map<K, V> {
+    throw Throwable("This implementation should be generated at compile time.")
 }

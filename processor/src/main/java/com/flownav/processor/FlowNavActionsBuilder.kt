@@ -37,12 +37,12 @@ class FlowNavActionsBuilder(
         package com.flownav.router
         import $PACKAGE_MARKER.R
         
-        fun android.content.Context.navMap(): Map<String, String> {
+        fun android.content.Context.navActivityMap(): Map<String, String> {
             return HashMap<String, String>().apply {
             }//endmap
         }
         
-        fun android.content.Context.navMapFragment(): Map<String, Pair<String, Int>> {
+        fun android.content.Context.navFragmentMap(): Map<String, Pair<String, Int>> {
             return HashMap<String, Pair<String, Int>>().apply {
             }//endfragmentMap
         }
