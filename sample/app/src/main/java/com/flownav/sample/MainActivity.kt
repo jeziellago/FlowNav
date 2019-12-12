@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViewById<Button>(R.id.go_to_second).setOnClickListener {
-            startActivity(NavigationRouter.openFeature1(this))
+            NavigationRouter.openFeature1(this)
         }
     }
 }

@@ -15,30 +15,39 @@
  */
 package com.flownav.router
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 
 abstract class FlowNavRouter {
 
-    private lateinit var navDestinationMap: Map<String, String>
-
-    fun init(destinationMap: Map<String, String>) {
-        navDestinationMap = destinationMap
+    protected fun Context.start(destinationKey: String, args: IntentParams = {}) {
+        createIntent(destinationKey)
+            .putExtras(Bundle().apply(args))
+            .run { startActivity(this) }
     }
 
-    infix fun Intent.withParams(args: Bundle.() -> Unit) = apply {
-        putExtras(Bundle().apply(args))
+    protected fun Activity.startForResult(
+        destinationKey: String,
+        resultCode: Int,
+        args: IntentParams = {}
+    ) {
+        createIntent(destinationKey)
+            .putExtras(Bundle().apply(args))
+            .run { startActivityForResult(intent, resultCode) }
     }
 
-    protected fun Context.open(
+    private fun Context.createIntent(
         destinationKey: String
     ) = Intent(Intent.ACTION_VIEW)
         .setClassName(
             packageName,
-            navDestinationMap[destinationKey]
+            FlowNavApp.getIntentMap()[destinationKey]
                 ?: throw IllegalArgumentException("$destinationKey not found.")
         )
 
 }
+
+typealias IntentParams = Bundle.() -> Unit
 

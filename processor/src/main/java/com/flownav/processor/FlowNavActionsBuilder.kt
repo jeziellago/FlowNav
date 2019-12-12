@@ -34,22 +34,19 @@ class FlowNavActionsBuilder(
     }
 
     private val template = """
-        package $PACKAGE_MARKER
+        package com.flownav.router
+        import $PACKAGE_MARKER.R
         
-        object FlowNavActions {
-            private val map by lazy {
-                HashMap<String, String>().apply {
-                }//endmap
-            }
-            private val fragmentMap by lazy {
-                HashMap<String, Pair<String, Int>>().apply {
-                }//endfragmentMap
-            }
-            
-            fun get(): Map<String, String> = map
-            
-            fun getFragments(): Map<String, Pair<String, Int>> = fragmentMap
+        fun android.content.Context.navMap(): Map<String, String> {
+            return HashMap<String, String>().apply {
+            }//endmap
         }
+        
+        fun android.content.Context.navMapFragment(): Map<String, Pair<String, Int>> {
+            return HashMap<String, Pair<String, Int>>().apply {
+            }//endfragmentMap
+        }
+        
     """.trimIndent()
 
     @Synchronized

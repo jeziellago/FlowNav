@@ -5,9 +5,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.flownav.navigation.NavigationFragmentRoutes.FifthFragment.ACTION_NAME_FIFTH
 import com.flownav.navigation.NavigationFragmentRoutes.FourthFragment.ACTION_NAME
-import com.flownav.routerfragment.FlowNavFragmentRouter
-import com.flownav.routerfragment.navigateTo
-import com.flownav.routerfragment.workWithNavGraphOf
+import com.flownav.router.FlowNavFragmentRouter
+import com.flownav.router.navigateTo
+import com.flownav.router.workWithNavGraphOf
 
 object NavigationFragmentRouter : FlowNavFragmentRouter() {
 

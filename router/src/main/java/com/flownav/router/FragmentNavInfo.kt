@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.flownav.routerfragment
+package com.flownav.router
 
 data class FragmentNavInfo(
     val id: Int,

@@ -1,4 +1,4 @@
-package com.flownav.routerfragment.extension
+package com.flownav.router.extension
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
