@@ -8,14 +8,14 @@ import com.flownav.router.FlowNavRouter
 
 object NavigationRouter : FlowNavRouter() {
 
-    fun openFeature1(context: Context) = context.open(FEATURE_1)
+    fun openFeature1(context: Context) = context.start(FEATURE_1)
 
     fun openFeature2(
         context: Context,
-        arg1: String
-    ) = context.open(FEATURE_2) withParams {
-        putString(SecondActionArgKeys.arg1, arg1)
+        param: String
+    ) = context.start(FEATURE_2) {
+        putString(SecondActionArgKeys.arg1, param)
     }
 
-    fun openFeature3(context: Context) = context.open(FEATURE_3)
+    fun openFeature3(context: Context) = context.start(FEATURE_3)
 }

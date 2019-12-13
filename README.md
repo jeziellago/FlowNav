@@ -10,7 +10,7 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 
 ```gradle
 // latest stable
-flownav_version = '0.2'
+flownav_version = '0.3'
 ```
 
 ## Gradle
@@ -50,16 +50,7 @@ dependencies {
 }
 ```
 
-#### Fragment Router
-
-```groovy
-dependencies {
-
-    api "com.flownav:routerfragment:$flownav_version"
-}
-```
-
->**`Router and Fragment Router` dependency is imported only on the `navigation module`**.
+>**`Router` dependency is imported only on the `navigation module`**.
 >
 >**The `app module` only needs `Annotation` dependency**
 >
@@ -80,6 +71,30 @@ Add `EntryFlowNav` annotation on feature-modules
 class MyFirstOneActivity : AppCompatActivity() { ...
 ```
 
+
+## Initialize FlowNav on Application
+
+To initialize the FlowNav library, we need to put the `@FlowNavMain` annotation on our Application class in the app module and initialize our Router.
+
+> The `@FlowNavMain` helps to identify the Application class to the library
+>
+> To initialize our Router, we will call the `start` function from `FlowNavApp`, who will receiver `navActivityMap()` and `navFragmentMap()`, extensions that provides the className of each activity annotated with `@EntryFlowNav` and fragments with `@EntryFragmentFlowNav`.
+
+```kotlin
+import com.flownav.router.FlowNavApp
+import com.flownav.router.navActivityMap
+import com.flownav.router.navFragmentMap
+
+@FlowNavMain
+class MyApplication : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        FlowNavApp.start(navActivityMap(), navFragmentMap())
+    }
+}
+```
+
 ## Create your Router class
 
 On the navigation module, create your router extending `FlowNavRouter` that router is responsible to export navigation functions.
@@ -92,46 +107,27 @@ Each function needs to receive a `Context`, and if needed, you can pass an `arg`
 >
 >`fun startFeature(context: Context, arg: Any)`
 
-To get the expected intent for the navigation, we need to use a context extension function named `open` who expects the [activity identifier constant](#declare-your-feature-modules-main-activity)
+To get the expected intent for the navigation, we need to use a context extension function named `start` who expects the [activity identifier constant](#declare-your-feature-modules-main-activity)
 
->`context.open(ACTIVITY_FEATURE_MODULE_IDENTIFY)`
+>`context.start(ACTIVITY_FEATURE_MODULE_IDENTIFY)`
 
-If you need to pass some arguments to the intent, we will use `withParams` infix fun.
+If you need to pass some arguments to the intent, we will open lambda on second param.
 
->`fun startFeature(context: Context, arg: Any) withParams { ...`
 
 ```kotlin
 object MyNavRouter : FlowNavRouter() {
 
-    fun startFeatureOne(context: Context) = context.open(FEATURE_ONE_ACTIVITY_IDENTIFIER)
+    fun startFeatureOne(context: Context) = context.start(FEATURE_ONE_ACTIVITY_IDENTIFIER)
 
     fun startFeatureTwo(
         context: Context,
         arg: String
-    ) = context.open(FEATURE_TWO_ACTIVITY_IDENTIFIER) withParams {
+    ) = context.start(FEATURE_TWO_ACTIVITY_IDENTIFIER) {
         putString("key", arg)
     }
 }
 ```
 
-## Initialize FlowNav on Application
-
-To initialize the FlowNav library, we need to put the `@FlowNavMain` annotation on our Application class in the app module and initialize our Router.
-
-> The `@FlowNavMain` helps to identify the Application class to the library
->
-> To initialize our Router, we will call the `init` function from `FlowNavRouter`, who will receiver `FlowNavActions`, a generated class that provides the className of each activity annotated with `@EntryFlowNav`.
-
-```kotlin
-@FlowNavMain
-class MyApplication : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-        MyNavRouter.init(FlowNavActions.get())
-    }
-}
-```
 
 # Fragment Usage
 
@@ -244,26 +240,6 @@ class OriginFragment : Fragment() {
     }
 }
 
-```
-
-
-## Initialize NavigationFragmentRouter on Application
-
-To initialize the NavigationFragmentRouter library, we need to put the `@FlowNavMain` annotation on our Application class in the app module and initialize our Router.
-
->The `@FlowNavMain` works to identify the Application class to the library.
->
-> To initialize our Router, we will call the `init` function from `FlowNavFragmentRouter`, who will receiver `FlowNavActions`. `FlowNavActions` is a generated class that provides the className and id of each fragment, that is annotated with `@EntryFragmentFlowNav`.
-
-```kotlin
-@FlowNavMain
-class MyApplication : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-        NavigationFragmentRouter.init(FlowNavActions.getFragments())
-    }
-}
 ```
 
 ## LICENSE

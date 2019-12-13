@@ -57,7 +57,7 @@ class FlowNavProcessor : AbstractProcessor() {
 
         if (kaptKotlinGeneratedDir.contains("/app/")) {
             val mainFlowNavInitializerElements = environment.getElementsAnnotatedWith(FlowNavMain::class.java)
-            val generatedNavClass = File("$generatedNavPath/${getKaptDir(kaptKotlinGeneratedDir)}", "FlowNavActions.kt")
+            val generatedNavClass = File("$generatedNavPath/${getKaptDir(kaptKotlinGeneratedDir)}", "FlowNavExtKt.kt")
             if (generatedNavClass.exists()) return true
             val mainInitializer = mainFlowNavInitializerElements.first()
             val packageName = processingEnv.elementUtils.getPackageOf(mainInitializer).toString()

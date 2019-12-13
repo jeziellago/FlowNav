@@ -18,7 +18,7 @@ class SecondActionActivity : AppCompatActivity() {
         txtSecond.text = text
 
         buttonOpenThird.setOnClickListener {
-            startActivity(NavigationRouter.openFeature3(this))
+            NavigationRouter.openFeature3(this)
         }
     }
 }

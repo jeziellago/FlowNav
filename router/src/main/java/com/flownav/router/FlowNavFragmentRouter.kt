@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-package com.flownav.routerfragment
+package com.flownav.router
 
 open class FlowNavFragmentRouter {
 
     internal val fragmentsToAdd = mutableMapOf<Int, FragmentNavInfo>()
     internal var startDestination: Int? = null
 
-    lateinit var navDestinationMap: Map<String, Pair<String, Int>>
-        private set
-
-    fun init(destinationMap: Map<String, Pair<String, Int>>) {
-        navDestinationMap = destinationMap
-    }
-
     fun addDestination(
         isStartDestination: Boolean = false,
         destinationKey: String
     ): FragmentNavInfo? {
 
-        return navDestinationMap[destinationKey]?.let {
+        return FlowNavApp.getFragmentMap()[destinationKey]?.let {
             if (isStartDestination) {
                 startDestination = it.second
             }
@@ -56,8 +49,8 @@ open class FlowNavFragmentRouter {
                 val newActions: HashMap<Int, Int> = hashMapOf()
 
                 destinations.forEach {
-                    navDestinationMap[it.key]?.second?.let { source ->
-                        navDestinationMap[it.value]?.second?.let {  destination ->
+                    FlowNavApp.getFragmentMap()[it.key]?.second?.let { source ->
+                        FlowNavApp.getFragmentMap()[it.value]?.second?.let {  destination ->
                             newActions.put(source, destination)
                         }
                     }
