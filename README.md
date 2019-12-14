@@ -4,6 +4,8 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 
 >**FlowNav is an annotation processor and tool to make navigation simple**.
 
+![](https://github.com/jeziellago/FlowNav/blob/master/sample/flownav.png)
+
 ## Current Stable Version
 
 ```gradle
