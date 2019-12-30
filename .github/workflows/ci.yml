@@ -1,17 +1,27 @@
 name: CI
-
-on: [push]
-
+on:
+    push:
+        branches:
+            - master
+    pull_request:
 jobs:
-  build:
+    ci:
+        name: Build + Test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
 
-    runs-on: ubuntu-latest
+            # Ensure .gradle/caches is empty before writing to it.
+            # This helps us stay within Github's cache size limits.
+            - name: Clean Cache
+              run: rm -rf ~/.gradle/caches
 
-    steps:
-    - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+            # Restore the cache.
+            # Intentionally don't set 'restore-keys' so the cache never contains redundant dependencies.
+            - uses: actions/cache@v1
+              with:
+                  path: ~/.gradle/caches
+                  key: gradle-${{ runner.os }}-${{ hashFiles('**/build.gradle.kts') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/src/main/kotlin/Library.kt') }}
+
+            - name: Build
+              run: ./gradlew build
