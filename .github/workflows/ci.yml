@@ -11,5 +11,5 @@ jobs:
         steps:
             - uses: actions/checkout@v1
             
-            - name: Open project dir
-              run: cd sample && ./gradlew :app:build
+            - name: Build Project
+              run: cd sample && ./gradlew build
