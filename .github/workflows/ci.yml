@@ -9,19 +9,7 @@ jobs:
         name: Build + Test
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-
-            # Ensure .gradle/caches is empty before writing to it.
-            # This helps us stay within Github's cache size limits.
-            - name: Clean Cache
-              run: rm -rf ~/.gradle/caches
-
-            # Restore the cache.
-            # Intentionally don't set 'restore-keys' so the cache never contains redundant dependencies.
-            - uses: actions/cache@v1
-              with:
-                  path: ~/.gradle/caches
-                  key: gradle-${{ runner.os }}-${{ hashFiles('**/build.gradle.kts') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/src/main/kotlin/Library.kt') }}
+            - uses: actions/checkout@v1
 
             - name: Build
               run: ./gradlew build
