@@ -12,7 +12,4 @@ jobs:
             - uses: actions/checkout@v1
             
             - name: Open project dir
-              run: cd sample
-
-            - name: Build
-              run: ./gradlew :app:build
+              run: cd sample && ./gradlew :app:build
