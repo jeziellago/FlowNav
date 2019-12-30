@@ -10,6 +10,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
+            
+            - name: Open project dir
+              run: cd sample
 
             - name: Build
-              run: ./gradlew build
+              run: ./gradlew :app:build
