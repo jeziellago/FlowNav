@@ -26,25 +26,15 @@ open class FlowNavFragmentRouter {
         isStartDestination: Boolean = false,
         isTopLevelDestination: Boolean = false,
         destinationKey: String
-    ): FragmentNavInfo? {
-
-        return FlowNavApp.getFragmentMap()[destinationKey]?.let {
-            if (isStartDestination) {
-                startDestination = it.fragmentId
+    ) =
+        FlowNavApp
+            .getFragmentMap()[destinationKey]
+            ?.run {
+                checkAsStartDestination(isStartDestination)
+                addTopLevelDestination(isTopLevelDestination)
+                createFragmentNavInfo()
             }
 
-            if (isTopLevelDestination) {
-                topLevelDestinations.add(it.fragmentId)
-            }
-
-            return FragmentNavInfo(
-                it.fragmentId,
-                it.actionName
-            ).apply {
-                fragmentsToAdd[id] = this
-            }
-        }
-    }
 
     infix fun FragmentNavInfo.withActions(destinationActions: HashMap<String, String>.() -> Unit) {
         fragmentsToAdd[id] = this.apply {
@@ -64,6 +54,30 @@ open class FlowNavFragmentRouter {
 
                 actions.putAll(newActions)
             }
+        }
+    }
+
+    private fun FragmentConfig.createFragmentNavInfo()  =
+        FragmentNavInfo(
+            fragmentId,
+            actionName
+        ).apply {
+            fragmentsToAdd[id] = this
+        }
+
+    private fun FragmentConfig.checkAsStartDestination(
+        isStartDestination: Boolean
+    ) {
+        if (isStartDestination) {
+            startDestination = fragmentId
+        }
+    }
+
+    private fun FragmentConfig.addTopLevelDestination(
+        isTopLevelDestination: Boolean
+    ) {
+        if (isTopLevelDestination) {
+            topLevelDestinations.add(fragmentId)
         }
     }
 }
