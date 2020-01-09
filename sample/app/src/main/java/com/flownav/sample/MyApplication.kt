@@ -3,8 +3,8 @@ package com.flownav.sample
 import android.app.Application
 import com.flownav.annotation.FlowNavMain
 import com.flownav.router.FlowNavApp
-import com.flownav.router.navActivityMap
-import com.flownav.router.navFragmentMap
+import com.flownav.router.extension.navActivityMap
+import com.flownav.router.extension.navFragmentMap
 
 @FlowNavMain
 class MyApplication : Application() {

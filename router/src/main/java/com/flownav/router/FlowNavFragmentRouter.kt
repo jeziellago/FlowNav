@@ -20,20 +20,26 @@ open class FlowNavFragmentRouter {
 
     internal val fragmentsToAdd = mutableMapOf<Int, FragmentNavInfo>()
     internal var startDestination: Int? = null
+    internal var topLevelDestinations: MutableList<Int> = mutableListOf()
 
     fun addDestination(
         isStartDestination: Boolean = false,
+        isTopLevelDestination: Boolean = false,
         destinationKey: String
     ): FragmentNavInfo? {
 
         return FlowNavApp.getFragmentMap()[destinationKey]?.let {
             if (isStartDestination) {
-                startDestination = it.second
+                startDestination = it.fragmentId
+            }
+
+            if (isTopLevelDestination) {
+                topLevelDestinations.add(it.fragmentId)
             }
 
             return FragmentNavInfo(
-                it.second,
-                it.first
+                it.fragmentId,
+                it.actionName
             ).apply {
                 fragmentsToAdd[id] = this
             }
@@ -49,8 +55,8 @@ open class FlowNavFragmentRouter {
                 val newActions: HashMap<Int, Int> = hashMapOf()
 
                 destinations.forEach {
-                    FlowNavApp.getFragmentMap()[it.key]?.second?.let { source ->
-                        FlowNavApp.getFragmentMap()[it.value]?.second?.let {  destination ->
+                    FlowNavApp.getFragmentMap()[it.key]?.fragmentId?.let { source ->
+                        FlowNavApp.getFragmentMap()[it.value]?.fragmentId?.let { destination ->
                             newActions.put(source, destination)
                         }
                     }
@@ -58,7 +64,6 @@ open class FlowNavFragmentRouter {
 
                 actions.putAll(newActions)
             }
-
         }
     }
 }

@@ -19,17 +19,20 @@
 package com.flownav.router
 
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavAction
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphNavigator
 import androidx.navigation.NavigatorProvider
-import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.flownav.router.extension.getGraphOr
 
 fun FlowNavFragmentRouter.workWithNavGraphOf(
@@ -39,38 +42,79 @@ fun FlowNavFragmentRouter.workWithNavGraphOf(
 ) {
     val navHostFragment = activity.supportFragmentManager.findFragmentById(navHost) as NavHostFragment
 
-    val navGraph = navHostFragment.navController.getGraphOr {
-        NavGraph(NavGraphNavigator(NavigatorProvider()))
-    }
+    val navGraph = getOrCreateNavGraph(navHostFragment)
 
     val navFrag = this
     navFrag.navigateFragment()
 
-    navFrag.fragmentsToAdd.forEach {
+    createDestinations(navGraph, activity, navHost)
+
+    navFrag.startDestination?.let { navGraph.startDestination = it }
+
+    navHostFragment.navController.graph = navGraph
+    configTopLevelDestinations(activity, navHostFragment)
+
+    cleanRouter(navFrag)
+}
+
+fun FlowNavFragmentRouter.navigateTo(destination: String, lifecycleOwner: LifecycleOwner) {
+    getNavControllerByLifecycle(lifecycleOwner)?.apply {
+        FlowNavApp.getFragmentMap()[destination]?.run {
+            this@apply.navigate(fragmentId)
+        }
+    }
+}
+
+fun FlowNavFragmentRouter.navigateUp(lifecycleOwner: LifecycleOwner): Boolean {
+    return getNavControllerByLifecycle(lifecycleOwner)?.run {
+        this.navigateUp()
+    } ?: run {
+        false
+    }
+}
+
+private fun getOrCreateNavGraph(navHostFragment: NavHostFragment) =
+    navHostFragment.navController.getGraphOr {
+        NavGraph(NavGraphNavigator(NavigatorProvider()))
+    }
+
+private fun FlowNavFragmentRouter.createDestinations(
+    navGraph: NavGraph,
+    activity: FragmentActivity,
+    navHost: Int
+) {
+    this.fragmentsToAdd.forEach { mapFragmentInfo ->
         navGraph.addDestination(
             FragmentNavigator(
                 activity,
                 activity.supportFragmentManager,
                 navHost
             ).createDestination().apply {
-                id = it.key
-                className = it.value.className
+                id = mapFragmentInfo.key
+                className = mapFragmentInfo.value.className
 
-                it.value.actions.forEach {
+                mapFragmentInfo.value.actions.forEach {
                     putAction(it.key, NavAction(it.value))
                 }
             })
     }
-
-    navFrag.startDestination?.let { navGraph.startDestination = it }
-
-    navHostFragment.navController.graph = navGraph
-    cleanRouter(navFrag)
 }
 
-fun FlowNavFragmentRouter.navigateTo(destination: String, lifecycleOwner: LifecycleOwner) {
+private fun FlowNavFragmentRouter.configTopLevelDestinations(
+    activity: FragmentActivity,
+    navHostFragment: NavHostFragment
+) {
+    if (this.topLevelDestinations.isNotEmpty()) {
+        AppBarConfiguration.Builder(this.topLevelDestinations.toSet()).build().apply {
+            (activity as? AppCompatActivity)?.run {
+                this.setupActionBarWithNavController(navHostFragment.navController, this@apply)
+            }
+        }
+    }
+}
 
-    val navController: NavController? = when(lifecycleOwner) {
+private fun getNavControllerByLifecycle(lifecycleOwner: LifecycleOwner): NavController? {
+    return when (lifecycleOwner) {
         is Fragment -> {
             lifecycleOwner.findNavController()
         }
@@ -81,13 +125,9 @@ fun FlowNavFragmentRouter.navigateTo(destination: String, lifecycleOwner: Lifecy
             error("Navigate only on Fragment or FragmentActivity")
         }
     }
-
-    FlowNavApp.getFragmentMap()[destination]?.second?.let {
-        navController?.navigate(it)
-    }
 }
-
 internal fun cleanRouter(navigateFragment: FlowNavFragmentRouter) {
     navigateFragment.fragmentsToAdd.clear()
     navigateFragment.startDestination = null
+    navigateFragment.topLevelDestinations.clear()
 }
