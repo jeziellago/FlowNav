@@ -34,7 +34,8 @@ class FlowNavActionsBuilder(
     }
 
     private val template = """
-        package com.flownav.router
+        package com.flownav.router.extension
+        import com.flownav.router.FragmentConfig
         import $PACKAGE_MARKER.R
         
         fun android.content.Context.navActivityMap(): Map<String, String> {
@@ -42,8 +43,8 @@ class FlowNavActionsBuilder(
             }//endmap
         }
         
-        fun android.content.Context.navFragmentMap(): Map<String, Pair<String, Int>> {
-            return HashMap<String, Pair<String, Int>>().apply {
+        fun android.content.Context.navFragmentMap(): Map<String, FragmentConfig> {
+            return HashMap<String, FragmentConfig>().apply {
             }//endfragmentMap
         }
         
@@ -54,11 +55,11 @@ class FlowNavActionsBuilder(
         action: String,
         actionType: String
     ) {
-        val content = if(actionType.contains("*")) {
+        val content = if (actionType.contains("*")) {
             val split: List<String> = actionType.split("*")
             file.readText().replace(
                 "}//endfragmentMap",
-                "\n\t\t\tthis[\"$action\"] = Pair(\"${split[0]}\", R.id.${split[1]})\n\t\t}//endfragmentMap"
+                "\n\t\t\tthis[\"$action\"] = FragmentConfig(\"${split[0]}\", R.id.${split[1]})\n\t\t}//endfragmentMap"
             )
         } else {
             file.readText().replace(

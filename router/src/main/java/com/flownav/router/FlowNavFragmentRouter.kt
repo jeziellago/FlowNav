@@ -20,25 +20,21 @@ open class FlowNavFragmentRouter {
 
     internal val fragmentsToAdd = mutableMapOf<Int, FragmentNavInfo>()
     internal var startDestination: Int? = null
+    internal var topLevelDestinations: MutableList<Int> = mutableListOf()
 
     fun addDestination(
         isStartDestination: Boolean = false,
+        isTopLevelDestination: Boolean = false,
         destinationKey: String
-    ): FragmentNavInfo? {
-
-        return FlowNavApp.getFragmentMap()[destinationKey]?.let {
-            if (isStartDestination) {
-                startDestination = it.second
+    ) =
+        FlowNavApp
+            .getFragmentMap()[destinationKey]
+            ?.run {
+                checkAsStartDestination(isStartDestination)
+                addTopLevelDestination(isTopLevelDestination)
+                createFragmentNavInfo()
             }
 
-            return FragmentNavInfo(
-                it.second,
-                it.first
-            ).apply {
-                fragmentsToAdd[id] = this
-            }
-        }
-    }
 
     infix fun FragmentNavInfo.withActions(destinationActions: HashMap<String, String>.() -> Unit) {
         fragmentsToAdd[id] = this.apply {
@@ -49,8 +45,8 @@ open class FlowNavFragmentRouter {
                 val newActions: HashMap<Int, Int> = hashMapOf()
 
                 destinations.forEach {
-                    FlowNavApp.getFragmentMap()[it.key]?.second?.let { source ->
-                        FlowNavApp.getFragmentMap()[it.value]?.second?.let {  destination ->
+                    FlowNavApp.getFragmentMap()[it.key]?.fragmentId?.let { source ->
+                        FlowNavApp.getFragmentMap()[it.value]?.fragmentId?.let { destination ->
                             newActions.put(source, destination)
                         }
                     }
@@ -58,7 +54,30 @@ open class FlowNavFragmentRouter {
 
                 actions.putAll(newActions)
             }
+        }
+    }
 
+    private fun FragmentConfig.createFragmentNavInfo()  =
+        FragmentNavInfo(
+            fragmentId,
+            actionName
+        ).apply {
+            fragmentsToAdd[id] = this
+        }
+
+    private fun FragmentConfig.checkAsStartDestination(
+        isStartDestination: Boolean
+    ) {
+        if (isStartDestination) {
+            startDestination = fragmentId
+        }
+    }
+
+    private fun FragmentConfig.addTopLevelDestination(
+        isTopLevelDestination: Boolean
+    ) {
+        if (isTopLevelDestination) {
+            topLevelDestinations.add(fragmentId)
         }
     }
 }

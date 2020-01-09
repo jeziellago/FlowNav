@@ -46,8 +46,6 @@ abstract class FlowNavRouter {
             FlowNavApp.getActivityMap()[destinationKey]
                 ?: throw IllegalArgumentException("$destinationKey not found.")
         )
-
 }
 
 typealias IntentParams = Bundle.() -> Unit
-

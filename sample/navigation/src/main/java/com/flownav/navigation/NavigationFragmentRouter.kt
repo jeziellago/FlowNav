@@ -7,6 +7,7 @@ import com.flownav.navigation.NavigationFragmentRoutes.FifthFragment.ACTION_NAME
 import com.flownav.navigation.NavigationFragmentRoutes.FourthFragment.ACTION_NAME
 import com.flownav.router.FlowNavFragmentRouter
 import com.flownav.router.navigateTo
+import com.flownav.router.navigateUp
 import com.flownav.router.workWithNavGraphOf
 
 object NavigationFragmentRouter : FlowNavFragmentRouter() {
@@ -15,6 +16,7 @@ object NavigationFragmentRouter : FlowNavFragmentRouter() {
         workWithNavGraphOf(navHost, activity) {
             addDestination(
                 isStartDestination = true,
+                isTopLevelDestination = true,
                 destinationKey = ACTION_NAME
             )?. withActions {
                 put(ACTION_NAME, ACTION_NAME_FIFTH)
@@ -29,4 +31,6 @@ object NavigationFragmentRouter : FlowNavFragmentRouter() {
     fun navigateToFifth(lifecycleOwner: LifecycleOwner) {
         navigateTo(ACTION_NAME_FIFTH, lifecycleOwner)
     }
+
+    fun isNavigateUp(lifecycleOwner: LifecycleOwner) = navigateUp(lifecycleOwner)
 }
