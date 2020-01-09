@@ -65,13 +65,12 @@ fun FlowNavFragmentRouter.navigateTo(destination: String, lifecycleOwner: Lifecy
     }
 }
 
-fun FlowNavFragmentRouter.navigateUp(lifecycleOwner: LifecycleOwner): Boolean {
-    return getNavControllerByLifecycle(lifecycleOwner)?.run {
+fun FlowNavFragmentRouter.navigateUp(lifecycleOwner: LifecycleOwner) =
+    getNavControllerByLifecycle(lifecycleOwner)?.run {
         this.navigateUp()
     } ?: run {
         false
     }
-}
 
 private fun getOrCreateNavGraph(navHostFragment: NavHostFragment) =
     navHostFragment.navController.getGraphOr {
@@ -83,7 +82,7 @@ private fun FlowNavFragmentRouter.createDestinations(
     activity: FragmentActivity,
     navHost: Int
 ) {
-    this.fragmentsToAdd.forEach { mapFragmentInfo ->
+    fragmentsToAdd.forEach { mapFragmentInfo ->
         navGraph.addDestination(
             FragmentNavigator(
                 activity,
@@ -104,8 +103,8 @@ private fun FlowNavFragmentRouter.configTopLevelDestinations(
     activity: FragmentActivity,
     navHostFragment: NavHostFragment
 ) {
-    if (this.topLevelDestinations.isNotEmpty()) {
-        AppBarConfiguration.Builder(this.topLevelDestinations.toSet()).build().apply {
+    if (topLevelDestinations.isNotEmpty()) {
+        AppBarConfiguration.Builder(topLevelDestinations.toSet()).build().apply {
             (activity as? AppCompatActivity)?.run {
                 this.setupActionBarWithNavController(navHostFragment.navController, this@apply)
             }
