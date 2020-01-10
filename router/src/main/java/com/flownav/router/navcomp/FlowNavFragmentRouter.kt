@@ -18,6 +18,7 @@ package com.flownav.router.navcomp
 
 import com.flownav.router.EntryConfig
 import com.flownav.router.FlowNavApp
+import com.flownav.router.isNotDefaultId
 
 open class FlowNavFragmentRouter {
 
@@ -45,25 +46,29 @@ open class FlowNavFragmentRouter {
                 val newActions: HashMap<Int, Int> = hashMapOf()
 
                 destinations.forEach {
-                    FlowNavApp.getEntryMap()[it.key]
-                        ?.actionId
-                        ?.takeIf { id -> id != -1 }
-                        ?.let { source ->
-                            FlowNavApp.getEntryMap()[it.value]
-                                ?.actionId
-                                ?.takeIf { id -> id != -1 }
-                                ?.let { destination -> newActions.put(source, destination) }
-                        }
+                    FlowNavApp.getEntryMap()[it.key]?.id
+                        ?.takeIf { id -> id.isNotDefaultId() }
+                        ?.let { source -> addActionReference(source, it.value, newActions) }
                 }
-
                 actions.putAll(newActions)
             }
         }
     }
 
+    private fun addActionReference(
+        source: Int,
+        action: String,
+        actionMap: HashMap<Int, Int>
+    ) {
+        FlowNavApp.getEntryMap()[action]
+            ?.id
+            ?.takeIf { id -> id.isNotDefaultId() }
+            ?.let { destination -> actionMap.put(source, destination) }
+    }
+
     private fun EntryConfig.createFragmentNavInfo() = FragmentNavInfo(
-        actionId,
-        actionName
+        id,
+        name
     ).apply {
         fragmentsToAdd[id] = this
     }
@@ -72,7 +77,7 @@ open class FlowNavFragmentRouter {
         isStartDestination: Boolean
     ) {
         if (isStartDestination) {
-            startDestination = actionId
+            startDestination = id
         }
     }
 
@@ -80,7 +85,7 @@ open class FlowNavFragmentRouter {
         isTopLevelDestination: Boolean
     ) {
         if (isTopLevelDestination) {
-            topLevelDestinations.add(actionId)
+            topLevelDestinations.add(id)
         }
     }
 }

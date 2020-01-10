@@ -35,6 +35,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.flownav.router.FlowNavApp
 import com.flownav.router.extension.getGraphOr
+import com.flownav.router.isNotDefaultId
 
 fun FlowNavFragmentRouter.workWithNavGraphOf(
     @IdRes navHost: Int,
@@ -62,8 +63,8 @@ fun FlowNavFragmentRouter.workWithNavGraphOf(
 fun FlowNavFragmentRouter.navigateTo(destination: String, lifecycleOwner: LifecycleOwner) {
     getNavControllerByLifecycle(lifecycleOwner)?.apply {
         FlowNavApp.getEntryMap()[destination]
-            ?.takeIf { it.actionId != -1 }
-            ?.run { this@apply.navigate(actionId) }
+            ?.takeIf { it.id.isNotDefaultId() }
+            ?.run { this@apply.navigate(id) }
     }
 }
 

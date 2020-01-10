@@ -56,7 +56,7 @@ fun LifecycleOwner.createFragment(
     val fragmentIdentifier = FlowNavApp.getEntryMap()[destinationKey]
         ?: error("$destinationKey not found.")
 
-    val fragment: Fragment = Class.forName(fragmentIdentifier.actionName)
+    val fragment: Fragment = Class.forName(fragmentIdentifier.name)
         .newInstance() as? Fragment
         ?: error("$destinationKey must be a Fragment.")
 

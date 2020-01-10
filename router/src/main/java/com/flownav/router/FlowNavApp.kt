@@ -15,6 +15,8 @@ object FlowNavApp {
 }
 
 data class EntryConfig(
-    val actionName: String,
-    val actionId: Int = -1
+    val name: String,
+    val id: Int = -1
 )
+
+internal fun Int.isNotDefaultId(): Boolean = (this != -1)
