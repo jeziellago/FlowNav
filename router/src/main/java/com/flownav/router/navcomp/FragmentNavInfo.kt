@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Jeziel Lago - Alex Soares.
+ * Copyright 2019, Jeziel Lago - Alex Soares.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.flownav.annotation
+package com.flownav.router.navcomp
 
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
-@Retention(AnnotationRetention.SOURCE)
-@MustBeDocumented
-annotation class EntryFragmentFlowNav(val actionName: String, val fragmentId: String)
+data class FragmentNavInfo(
+    val id: Int,
+    val className: String,
+    val actions: HashMap<Int, Int> = hashMapOf()
+)

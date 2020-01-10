@@ -20,32 +20,45 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 
-abstract class FlowNavRouter {
-
-    protected fun Context.start(destinationKey: String, args: IntentParams = {}) {
-        createIntent(destinationKey)
-            .putExtras(Bundle().apply(args))
-            .run { startActivity(this) }
-    }
-
-    protected fun Activity.startForResult(
-        destinationKey: String,
-        resultCode: Int,
-        args: IntentParams = {}
-    ) {
-        createIntent(destinationKey)
-            .putExtras(Bundle().apply(args))
-            .run { startActivityForResult(intent, resultCode) }
-    }
-
-    private fun Context.createIntent(
-        destinationKey: String
-    ) = Intent(Intent.ACTION_VIEW)
-        .setClassName(
-            packageName,
-            FlowNavApp.getActivityMap()[destinationKey]
-                ?: throw IllegalArgumentException("$destinationKey not found.")
-        )
+/***
+ * Call startActivity from [destinationKey] using [flags] to Intent and
+ * [args] as Bundle params
+ */
+fun Context.start(
+    destinationKey: String,
+    flags: List<Int>? = null,
+    args: IntentParams = {}
+) {
+    startActivity(createIntent(destinationKey, flags, args))
 }
+
+/***
+ * Call startForResult from [destinationKey] using [flags] to Intent and
+ * [args] as Bundle params
+ */
+fun Activity.startForResult(
+    destinationKey: String,
+    requestCode: Int,
+    flags: List<Int>? = null,
+    args: IntentParams = {}
+) {
+    startActivityForResult(createIntent(destinationKey, flags, args), requestCode)
+}
+
+/***
+ * Create [Intent] from [destinationKey] using [flags] to Intent and
+ * [args] as Bundle params
+ */
+fun Context.createIntent(
+    destinationKey: String,
+    flags: List<Int>? = null,
+    args: IntentParams = {}
+) = Intent(Intent.ACTION_VIEW)
+    .putExtras(Bundle().apply(args))
+    .setClassName(
+        packageName,
+        FlowNavApp.getEntryMap()[destinationKey]?.name
+            ?: error("$destinationKey not found.")
+    ).apply { flags?.forEach { addFlags(it) } }
 
 typealias IntentParams = Bundle.() -> Unit

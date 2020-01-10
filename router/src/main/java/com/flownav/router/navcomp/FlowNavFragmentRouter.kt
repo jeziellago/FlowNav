@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.flownav.router
+package com.flownav.router.navcomp
+
+import com.flownav.router.EntryConfig
+import com.flownav.router.FlowNavApp
+import com.flownav.router.isNotDefaultId
 
 open class FlowNavFragmentRouter {
 
@@ -26,15 +30,12 @@ open class FlowNavFragmentRouter {
         isStartDestination: Boolean = false,
         isTopLevelDestination: Boolean = false,
         destinationKey: String
-    ) =
-        FlowNavApp
-            .getFragmentMap()[destinationKey]
-            ?.run {
-                checkAsStartDestination(isStartDestination)
-                addTopLevelDestination(isTopLevelDestination)
-                createFragmentNavInfo()
-            }
-
+    ) = FlowNavApp.getEntryMap()[destinationKey]
+        ?.run {
+            checkAsStartDestination(isStartDestination)
+            addTopLevelDestination(isTopLevelDestination)
+            createFragmentNavInfo()
+        }
 
     infix fun FragmentNavInfo.withActions(destinationActions: HashMap<String, String>.() -> Unit) {
         fragmentsToAdd[id] = this.apply {
@@ -45,39 +46,46 @@ open class FlowNavFragmentRouter {
                 val newActions: HashMap<Int, Int> = hashMapOf()
 
                 destinations.forEach {
-                    FlowNavApp.getFragmentMap()[it.key]?.fragmentId?.let { source ->
-                        FlowNavApp.getFragmentMap()[it.value]?.fragmentId?.let { destination ->
-                            newActions.put(source, destination)
-                        }
-                    }
+                    FlowNavApp.getEntryMap()[it.key]?.id
+                        ?.takeIf { id -> id.isNotDefaultId() }
+                        ?.let { source -> addActionReference(source, it.value, newActions) }
                 }
-
                 actions.putAll(newActions)
             }
         }
     }
 
-    private fun FragmentConfig.createFragmentNavInfo()  =
-        FragmentNavInfo(
-            fragmentId,
-            actionName
-        ).apply {
-            fragmentsToAdd[id] = this
-        }
+    private fun addActionReference(
+        source: Int,
+        action: String,
+        actionMap: HashMap<Int, Int>
+    ) {
+        FlowNavApp.getEntryMap()[action]
+            ?.id
+            ?.takeIf { id -> id.isNotDefaultId() }
+            ?.let { destination -> actionMap.put(source, destination) }
+    }
 
-    private fun FragmentConfig.checkAsStartDestination(
+    private fun EntryConfig.createFragmentNavInfo() = FragmentNavInfo(
+        id,
+        name
+    ).apply {
+        fragmentsToAdd[id] = this
+    }
+
+    private fun EntryConfig.checkAsStartDestination(
         isStartDestination: Boolean
     ) {
         if (isStartDestination) {
-            startDestination = fragmentId
+            startDestination = id
         }
     }
 
-    private fun FragmentConfig.addTopLevelDestination(
+    private fun EntryConfig.addTopLevelDestination(
         isTopLevelDestination: Boolean
     ) {
         if (isTopLevelDestination) {
-            topLevelDestinations.add(fragmentId)
+            topLevelDestinations.add(id)
         }
     }
 }

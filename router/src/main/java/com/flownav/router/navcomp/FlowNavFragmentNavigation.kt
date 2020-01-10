@@ -16,7 +16,7 @@
 
 @file:Suppress("unused")
 
-package com.flownav.router
+package com.flownav.router.navcomp
 
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -33,14 +33,17 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.flownav.router.FlowNavApp
 import com.flownav.router.extension.getGraphOr
+import com.flownav.router.isNotDefaultId
 
 fun FlowNavFragmentRouter.workWithNavGraphOf(
     @IdRes navHost: Int,
     activity: FragmentActivity,
     navigateFragment: FlowNavFragmentRouter.() -> Unit
 ) {
-    val navHostFragment = activity.supportFragmentManager.findFragmentById(navHost) as NavHostFragment
+    val navHostFragment =
+        activity.supportFragmentManager.findFragmentById(navHost) as NavHostFragment
 
     val navGraph = getOrCreateNavGraph(navHostFragment)
 
@@ -59,9 +62,9 @@ fun FlowNavFragmentRouter.workWithNavGraphOf(
 
 fun FlowNavFragmentRouter.navigateTo(destination: String, lifecycleOwner: LifecycleOwner) {
     getNavControllerByLifecycle(lifecycleOwner)?.apply {
-        FlowNavApp.getFragmentMap()[destination]?.run {
-            this@apply.navigate(fragmentId)
-        }
+        FlowNavApp.getEntryMap()[destination]
+            ?.takeIf { it.id.isNotDefaultId() }
+            ?.run { this@apply.navigate(id) }
     }
 }
 
@@ -125,6 +128,7 @@ private fun getNavControllerByLifecycle(lifecycleOwner: LifecycleOwner): NavCont
         }
     }
 }
+
 internal fun cleanRouter(navigateFragment: FlowNavFragmentRouter) {
     navigateFragment.fragmentsToAdd.clear()
     navigateFragment.startDestination = null

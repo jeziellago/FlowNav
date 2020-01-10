@@ -35,17 +35,12 @@ class FlowNavActionsBuilder(
 
     private val template = """
         package com.flownav.router.extension
-        import com.flownav.router.FragmentConfig
+        import com.flownav.router.EntryConfig
         import $PACKAGE_MARKER.R
         
-        fun android.content.Context.navActivityMap(): Map<String, String> {
-            return HashMap<String, String>().apply {
+        fun android.content.Context.getEntryMap(): Map<String, EntryConfig> {
+            return HashMap<String, EntryConfig>().apply {
             }//endmap
-        }
-        
-        fun android.content.Context.navFragmentMap(): Map<String, FragmentConfig> {
-            return HashMap<String, FragmentConfig>().apply {
-            }//endfragmentMap
         }
         
     """.trimIndent()
@@ -58,13 +53,13 @@ class FlowNavActionsBuilder(
         val content = if (actionType.contains("*")) {
             val split: List<String> = actionType.split("*")
             file.readText().replace(
-                "}//endfragmentMap",
-                "\n\t\t\tthis[\"$action\"] = FragmentConfig(\"${split[0]}\", R.id.${split[1]})\n\t\t}//endfragmentMap"
+                "}//endmap",
+                "\n\t\t\tthis[\"$action\"] = EntryConfig(\"${split[0]}\", R.id.${split[1]})\n\t\t}//endmap"
             )
         } else {
             file.readText().replace(
                 "}//endmap",
-                "\n\t\t\tthis[\"$action\"] = \"$actionType\"\n\t\t}//endmap"
+                "\n\t\t\tthis[\"$action\"] = EntryConfig(\"$actionType\")\n\t\t}//endmap"
             )
         }
         file.writeText(content)
@@ -76,15 +71,13 @@ class FlowNavActionsBuilder(
             parentPath: String,
             action: String,
             actionType: String,
-            fragmentId: String? = null
+            fragmentId: String
         ) {
             File(parentPath, action).apply {
                 parentFile.mkdirs()
 
                 var textToWrite = actionType
-                textToWrite += fragmentId?.let {
-                    "*$fragmentId"
-                }.orEmpty()
+                textToWrite += if (fragmentId.isNotEmpty()) "*$fragmentId" else fragmentId
 
                 writeText(textToWrite)
             }
