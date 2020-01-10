@@ -1,25 +1,20 @@
 package com.flownav.router
 
 object FlowNavApp {
-    private lateinit var activityMap: Map<String, String>
-    private lateinit var fragmentMap: Map<String, FragmentConfig>
+
+    private lateinit var entryMap: Map<String, EntryConfig>
 
     fun start(
-        activityMap: Map<String, String> = emptyMap(),
-        fragmentMap: Map<String, FragmentConfig> = emptyMap()
+        entryMap: Map<String, EntryConfig> = emptyMap()
     ) {
-        require(!(activityMap.isEmpty() && fragmentMap.isEmpty())) {
-            "activityMap or fragmentMap must be required for start FlowNavApp."
-        }
-        this.activityMap = activityMap
-        this.fragmentMap = fragmentMap
+        require(entryMap.isNotEmpty()) { "entryMap must be required for start FlowNavApp." }
+        this.entryMap = entryMap
     }
 
-    fun getActivityMap() = activityMap
-    fun getFragmentMap() = fragmentMap
+    fun getEntryMap() = entryMap
 }
 
-data class FragmentConfig(
+data class EntryConfig(
     val actionName: String,
-    val fragmentId: Int
+    val actionId: Int = -1
 )

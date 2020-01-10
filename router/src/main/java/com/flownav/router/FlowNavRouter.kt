@@ -22,30 +22,36 @@ import android.os.Bundle
 
 abstract class FlowNavRouter {
 
-    protected fun Context.start(destinationKey: String, args: IntentParams = {}) {
-        createIntent(destinationKey)
-            .putExtras(Bundle().apply(args))
+    protected fun Context.start(
+        destinationKey: String,
+        flags: List<Int>? = null,
+        args: IntentParams = {}
+    ) {
+        createIntent(destinationKey, flags, args)
             .run { startActivity(this) }
     }
 
     protected fun Activity.startForResult(
         destinationKey: String,
         resultCode: Int,
+        flags: List<Int>? = null,
         args: IntentParams = {}
     ) {
-        createIntent(destinationKey)
-            .putExtras(Bundle().apply(args))
+        createIntent(destinationKey, flags, args)
             .run { startActivityForResult(intent, resultCode) }
     }
 
     private fun Context.createIntent(
-        destinationKey: String
+        destinationKey: String,
+        flags: List<Int>? = null,
+        args: IntentParams = {}
     ) = Intent(Intent.ACTION_VIEW)
+        .putExtras(Bundle().apply(args))
         .setClassName(
             packageName,
-            FlowNavApp.getActivityMap()[destinationKey]
-                ?: throw IllegalArgumentException("$destinationKey not found.")
-        )
+            FlowNavApp.getEntryMap()[destinationKey]?.actionName
+                ?: error("$destinationKey not found.")
+        ).apply { flags?.forEach { addFlags(it) } }
 }
 
 typealias IntentParams = Bundle.() -> Unit

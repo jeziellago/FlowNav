@@ -8,6 +8,7 @@ object NavigationFragmentRoutes {
 
     object FifthFragment {
         const val ACTION_NAME_FIFTH = "FIFTH_FRAGMENT"
+        const val ACTION_NAME_FIFTH_CHILD = "FIFTH_FRAGMENT_CHILD"
         const val FRAGMENT_ID_FIFTH = "fifth_fragment_identifier"
     }
 }

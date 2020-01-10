@@ -8,10 +8,27 @@
     <TextView
         android:id="@+id/txtFifth"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/fifth_action"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/txtFifth"
+        android:id="@+id/btnCallFragmentChild"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/btn_call_child"/>
+
+    <FrameLayout
+        android:id="@+id/containerFeatureFifth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,6 @@
 package com.flownav.processor
 
 import com.flownav.annotation.EntryFlowNav
-import com.flownav.annotation.EntryFragmentFlowNav
 import com.flownav.annotation.FlowNavMain
 import com.google.auto.service.AutoService
 import java.io.File
@@ -37,7 +36,6 @@ import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
 @IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.ISOLATING)
 @SupportedAnnotationTypes(
     "com.flownav.annotation.EntryFlowNav",
-    "com.flownav.annotation.EntryFragmentFlowNav",
     "com.flownav.annotation.FlowNavMain"
 )
 @SupportedOptions(FlowNavProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME)
@@ -60,52 +58,49 @@ class FlowNavProcessor : AbstractProcessor() {
         val generatedNavPath = getModulePath(kaptKotlinGeneratedDir, "app")
         val targetParentPath = "$generatedNavPath/build/generated/source/cache/flownav-processor"
 
-        if (kaptKotlinGeneratedDir.contains("/app/")) {
-            val mainFlowNavInitializerElements = environment.getElementsAnnotatedWith(FlowNavMain::class.java)
-            val generatedNavClass = File("$generatedNavPath/${getKaptDir(kaptKotlinGeneratedDir)}", "FlowNavExtKt.kt")
-            if (generatedNavClass.exists()) return true
-            val mainInitializer = mainFlowNavInitializerElements.first()
-            val packageName = processingEnv.elementUtils.getPackageOf(mainInitializer).toString()
-            val classBuilder = FlowNavActionsBuilder(generatedNavClass).openFile(packageName)
-            File(targetParentPath).listFiles()?.forEach {
-                if (!it.name.contains(".kt")) {
-                    classBuilder.addAction(it.name, it.readText())
-                }
+        if (kaptKotlinGeneratedDir.contains("/app/"))
+            return transformCacheOnData(
+                environment,
+                targetParentPath,
+                generatedNavPath,
+                kaptKotlinGeneratedDir
+            )
+
+        return annotatedEntryFlowNav(environment, targetParentPath)
+    }
+
+    private fun transformCacheOnData(
+        environment: RoundEnvironment,
+        targetParentPath: String,
+        generatedNavPath: String,
+        kaptKotlinGeneratedDir: String
+    ): Boolean {
+        val mainFlowNavInitializerElements =
+            environment.getElementsAnnotatedWith(FlowNavMain::class.java)
+        val generatedNavClass =
+            File("$generatedNavPath/${getKaptDir(kaptKotlinGeneratedDir)}", "FlowNavExtKt.kt")
+
+        if (generatedNavClass.exists()) return true
+
+        val mainInitializer = mainFlowNavInitializerElements.first()
+        val packageName = processingEnv.elementUtils.getPackageOf(mainInitializer).toString()
+        val classBuilder = FlowNavActionsBuilder(generatedNavClass).openFile(packageName)
+        File(targetParentPath).listFiles()?.forEach {
+            if (!it.name.contains(".kt")) {
+                classBuilder.addAction(it.name, it.readText())
             }
-            return true
         }
-
-        val annotatedElements = environment.getElementsAnnotatedWith(EntryFlowNav::class.java)
-
-        annotatedElements
-            .forEach { element ->
-                val action = element.getAnnotation(EntryFlowNav::class.java).actionName
-                val packageName = processingEnv.elementUtils.getPackageOf(element).toString()
-                if (element.kind.isClass) {
-                    val className = element.simpleName.toString()
-                    FlowNavActionsBuilder.writeTarget(
-                        targetParentPath,
-                        action,
-                        "$packageName.$className"
-                    )
-                }
-            }
-
-        annotatedEntryFragmentFlowNav(environment, targetParentPath)
-
         return true
     }
 
-    private fun annotatedEntryFragmentFlowNav(
+    private fun annotatedEntryFlowNav(
         environment: RoundEnvironment,
         targetParentPath: String
-    ) {
-        val annotatedElements = environment.getElementsAnnotatedWith(EntryFragmentFlowNav::class.java)
-
-        annotatedElements
+    ): Boolean {
+        environment.getElementsAnnotatedWith(EntryFlowNav::class.java)
             .forEach { element ->
-                val action = element.getAnnotation(EntryFragmentFlowNav::class.java).actionName
-                val fragmentId = element.getAnnotation(EntryFragmentFlowNav::class.java).fragmentId
+                val action = element.getAnnotation(EntryFlowNav::class.java).actionName
+                val fragmentId = element.getAnnotation(EntryFlowNav::class.java).actionId
                 val packageName = processingEnv.elementUtils.getPackageOf(element).toString()
                 if (element.kind.isClass) {
                     val className = element.simpleName.toString()
@@ -117,6 +112,7 @@ class FlowNavProcessor : AbstractProcessor() {
                     )
                 }
             }
+        return true
     }
 
     private tailrec fun getModulePath(currentPath: String, targetModule: String): String {

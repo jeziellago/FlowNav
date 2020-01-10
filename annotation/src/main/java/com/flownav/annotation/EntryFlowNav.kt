@@ -15,7 +15,7 @@
  */
 package com.flownav.annotation
 
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
 @MustBeDocumented
-annotation class EntryFlowNav(val actionName: String)
+annotation class EntryFlowNav(val actionName: String, val actionId: String = "")

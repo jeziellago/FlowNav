@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">fifthaction</string>
     <string name="fifth_action">fifth action</string>
+    <string name="fifth_fragment_child">Fragment Child Here!</string>
+    <string name="btn_call_child">Load child</string>
 </resources>
