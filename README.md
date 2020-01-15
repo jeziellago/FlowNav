@@ -2,10 +2,10 @@
 
 FlowNav is a mobile library for Android that helps and provider a better way to make multi-modules navigation.
 
->The main purpose of this library is to help in cases where you have a project with multiple modules and need to navigate from >one feature to another without adding dependency between them. For example, to navigate from module A to module B, you do not >need to add module B as a dependency of module A.
+>The main purpose of this library is to help in cases where you have a project with multiple modules and need to navigate from one feature to another without adding dependency between them. For example, to navigate from module A to module B, you do not need to add module B as a dependency of module A.
 >
->There are other ways to solve the problem of module-to-module navigation such as using Intent-filter (which is error-prone and >not supportive of fragments). FlowNav solves these problems, either using Activities, native Fragments, or through the >Navigation Component.
-
+>There are other ways to solve the problem of module-to-module navigation such as using Intent-filter (which is error-prone and not support fragments). FlowNav solves these problems, either using Activities, native Fragments, or through the Navigation Component.
+>
 >**Check the [wiki](https://github.com/jeziellago/FlowNav/wiki).**
 
 ![](https://github.com/jeziellago/FlowNav/blob/master/sample/flownav.png)
