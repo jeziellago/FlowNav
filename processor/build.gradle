@@ -3,7 +3,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 
 kapt {
-    generateStubs = true
     correctErrorTypes = true
 }
 
@@ -16,8 +15,9 @@ sourceSets {
 }
 
 ext {
-    autoservice = '1.0-rc4'
+    autoservice = '1.0-rc6'
     incap_processor = '0.2'
+    autocommon = '0.10'
     kotlinpoet = '1.4.4'
 }
 
@@ -30,6 +30,7 @@ dependencies {
     compileOnly("net.ltgt.gradle.incap:incap:$incap_processor")
 
     implementation "com.google.auto.service:auto-service:$autoservice"
+    implementation "com.google.auto:auto-common:$autocommon"
 
     kapt project(":annotation")
     kapt "com.google.auto.service:auto-service:$autoservice"
