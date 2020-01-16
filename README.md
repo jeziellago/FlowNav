@@ -10,11 +10,13 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 
 ![](https://github.com/jeziellago/FlowNav/blob/master/sample/flownav.png)
 
+## FlowNav is Incremental Annotation Processor
+Enable it with `kapt.incremental.apt=true` on `gradle.properties`.
 ## Current Stable Version
 
 ```gradle
 // latest stable
-flownav_version = '0.4'
+flownav_version = '0.4.1'
 ```
 
 ## Start Now!
@@ -22,6 +24,7 @@ flownav_version = '0.4'
 * [Init FlowNavApp on Application](https://github.com/jeziellago/FlowNav/wiki/Start-FlowNav)
 * [Navigation on Activities](https://github.com/jeziellago/FlowNav/wiki/Navigation-on-Activities)
 * [Navigation on Fragments](https://github.com/jeziellago/FlowNav/wiki/Navigation-on-Fragments)
+* [Fragments using Navigation Component](https://github.com/jeziellago/FlowNav/wiki/Fragments-using-Navigation-Component)
 
 
 ## LICENSE
