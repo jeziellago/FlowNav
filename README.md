@@ -11,7 +11,8 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 ![](https://github.com/jeziellago/FlowNav/blob/master/sample/flownav.png)
 
 ## FlowNav is Incremental Annotation Processor
-Enable it with `kapt.incremental.apt=true` on `gradle.properties`.
+- Kotlin >= 1.3.50, enabled by default 
+- Use `kapt.incremental.apt=true` on `gradle.properties` if your Kotlin version is < 1.3.50
 ## Current Stable Version
 
 ```gradle
