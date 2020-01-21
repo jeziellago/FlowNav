@@ -25,7 +25,7 @@ internal class FlowNavProcessingStep(
         val generatedNavPath = kaptKotlinGeneratedDir.getModulePath()
         val targetParentPath = "$generatedNavPath/$PROCESSOR_CACHE_PATH"
 
-        if (kaptKotlinGeneratedDir.contains(generatedNavPath)) {
+        if (kaptKotlinGeneratedDir.contains(generatedNavPath.split(PATH_SEPARATOR).last())) {
             buildFlowNavMap(
                 elementsByAnnotation,
                 targetParentPath,
