@@ -12,7 +12,6 @@ import javax.tools.Diagnostic
 internal const val INCREMENTAL_ISOLATING = "org.gradle.annotation.processing.isolating"
 internal const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
 internal const val PROCESSOR_CACHE_PATH = "build/generated/source/cache/flownav-processor"
-internal const val SLASHED_APP_DIR = "/app/"
 internal const val FLOW_NAV_GEN_FILE = "FlowNavExtKt.kt"
 internal const val DEFAULT_MAIN_MODULE = "app"
 internal const val PROPERTIES_FILE = "gradle.properties"
