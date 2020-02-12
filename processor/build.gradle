@@ -41,7 +41,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.flownav'
             artifactId = 'processor'
-            version = '0.4.2'
+            version = '0.4.3'
             from components.java
         }
     }
