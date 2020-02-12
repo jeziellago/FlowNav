@@ -17,7 +17,7 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 
 ```gradle
 // latest stable
-flownav_version = '0.4.2'
+flownav_version = '0.4.3'
 ```
 
 ## Start Now!
