@@ -24,7 +24,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.flownav'
             artifactId = 'annotation'
-            version = '0.4.3'
+            version = '0.4.4'
             from components.java
         }
     }

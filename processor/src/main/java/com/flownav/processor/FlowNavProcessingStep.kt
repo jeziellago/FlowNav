@@ -22,14 +22,18 @@ internal class FlowNavProcessingStep(
 
         val default = mutableSetOf<Element>()
         val kaptKotlinGeneratedDir = processingEnv.getKaptKotlinGeneratedDir() ?: return default
-        val generatedNavPath = kaptKotlinGeneratedDir.getModulePath()
-        val targetParentPath = "$generatedNavPath/$PROCESSOR_CACHE_PATH"
+        val generatedNavPath = kaptKotlinGeneratedDir.getMainModule()
+        val targetParentPath = "${generatedNavPath.first()}/$PROCESSOR_CACHE_PATH"
 
-        if (kaptKotlinGeneratedDir.contains("/${generatedNavPath.split(PATH_SEPARATOR).last()}/")) {
+        val navPath = generatedNavPath.firstOrNull {
+            kaptKotlinGeneratedDir.contains("/${it.split(PATH_SEPARATOR).last()}/")
+        }
+
+        if (navPath != null) {
             buildFlowNavMap(
                 elementsByAnnotation,
                 targetParentPath,
-                generatedNavPath,
+                navPath,
                 kaptKotlinGeneratedDir
             )
         } else {
