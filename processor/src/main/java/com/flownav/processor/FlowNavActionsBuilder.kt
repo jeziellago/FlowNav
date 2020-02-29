@@ -73,6 +73,9 @@ class FlowNavActionsBuilder(
             actionType: String,
             fragmentId: String
         ) {
+            require(!action.contains(PATH_SEPARATOR)) {
+                "Invalid key: \"$action\". \"$PATH_SEPARATOR\" is an invalid token."
+            }
             File(parentPath, action).apply {
                 parentFile.mkdirs()
 

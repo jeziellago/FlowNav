@@ -47,7 +47,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'com.flownav'
             artifactId = 'router'
-            version = '0.4.3'
+            version = '0.4.4'
             artifact("$buildDir/outputs/aar/router-release.aar")
         }
     }

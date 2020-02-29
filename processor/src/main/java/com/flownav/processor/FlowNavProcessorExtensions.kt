@@ -18,6 +18,7 @@ internal const val PROPERTIES_FILE = "gradle.properties"
 internal const val FLOWNAV_MAIN_MODULE_PROPERTY = "flownav.main.module"
 internal const val BUILD_TYPE_SOURCE = "build/generated/source"
 internal const val PATH_SEPARATOR = "/"
+internal const val APP_MODULE_SEPARATOR = ","
 
 internal fun ProcessingEnvironment.getKaptKotlinGeneratedDir(): String? {
     return options[KAPT_KOTLIN_GENERATED_OPTION_NAME] ?: run {
@@ -29,7 +30,7 @@ internal fun ProcessingEnvironment.getKaptKotlinGeneratedDir(): String? {
     }
 }
 
-internal fun String.getModulePath(): String {
+internal fun String.getMainModule(): List<String> {
     val source: String = this
     val propertyFilePath = findTargetPath(PROPERTIES_FILE)
 
@@ -44,9 +45,17 @@ internal fun String.getModulePath(): String {
         return path
     }
 
-    val mainDefaultModule: (String) -> String = { target ->
-        val mainModule = source.findTargetPath(target)
-        validateModule(mainModule, target)
+    val mainDefaultModules: (String) -> List<String> = { target ->
+        val targetAppModules = target.split(APP_MODULE_SEPARATOR)
+        if (targetAppModules.isEmpty()) {
+            val mainModule = source.findTargetPath(target)
+            listOf(validateModule(mainModule, target))
+        } else {
+            targetAppModules.map {
+                val mainModule = source.findTargetPath(it)
+                validateModule(mainModule, it)
+            }
+        }
     }
 
     return if (propertyFilePath.isNotEmpty()) {
@@ -54,10 +63,10 @@ internal fun String.getModulePath(): String {
             .apply { load(FileInputStream(propertyFilePath)) }
             .run {
                 getProperty(FLOWNAV_MAIN_MODULE_PROPERTY, null)
-                    ?.let { mainDefaultModule.invoke(it) }
-            } ?: mainDefaultModule.invoke(DEFAULT_MAIN_MODULE)
+                    ?.let { mainDefaultModules.invoke(it.trim()) }
+            } ?: mainDefaultModules.invoke(DEFAULT_MAIN_MODULE)
     } else {
-        mainDefaultModule(DEFAULT_MAIN_MODULE)
+        mainDefaultModules(DEFAULT_MAIN_MODULE)
     }
 }
 
