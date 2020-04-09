@@ -1,4 +1,4 @@
-# FlowNav &nbsp;&nbsp; ![](https://androidweekly.net/issues/issue-397/badge) ![](https://api.travis-ci.org/jeziellago/FlowNav.svg)
+# FlowNav &nbsp;&nbsp; [![](https://androidweekly.net/issues/issue-397/badge)](https://androidweekly.net/issues/issue-397) ![](https://api.travis-ci.org/jeziellago/FlowNav.svg)
 
 FlowNav is a mobile library for Android that helps and provider a better way to make multi-modules navigation.
 
