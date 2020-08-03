@@ -7,6 +7,7 @@ import com.google.common.collect.SetMultimap
 import java.io.File
 import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.element.Element
+import javax.tools.Diagnostic
 
 internal class FlowNavProcessingStep(
     private val processingEnv: ProcessingEnvironment
@@ -48,9 +49,9 @@ internal class FlowNavProcessingStep(
         generatedNavPath: String,
         kaptKotlinGeneratedDir: String
     ) {
-        val mainFlowNavInitializerElements = elementsByAnnotation?.run {
-            this[FlowNavMain::class.java]
-        } ?: return
+        val mainFlowNavInitializerElements = elementsByAnnotation
+            ?.get(FlowNavMain::class.java)
+            ?: return
 
         val generatedNavClass = File(
             "$generatedNavPath/${kaptKotlinGeneratedDir.getKaptDir()}",
@@ -61,8 +62,20 @@ internal class FlowNavProcessingStep(
         val packageName = processingEnv.elementUtils.getPackageOf(mainInitializer).toString()
         val classBuilder = FlowNavActionsBuilder(generatedNavClass).openFile(packageName)
 
-        File(targetParentPath).listFiles()?.forEach {
-            classBuilder.addAction(it.name, it.readText())
+        val entryRegisters = File(targetParentPath).listFiles()
+
+        if(entryRegisters.isNullOrEmpty()) {
+            processingEnv.messager.printMessage(
+                Diagnostic.Kind.ERROR,
+                "Invalid cache detected! Clean and rebuild your modules."
+            )
+            return
+        }
+
+        entryRegisters.forEach { register ->
+            classBuilder
+                .addAction(register.name, register.readText())
+                .also { register.delete() }
         }
     }
 

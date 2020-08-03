@@ -5,7 +5,7 @@ apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
 
 
     defaultConfig {
@@ -28,7 +28,7 @@ android {
 }
 
 ext {
-    navigation_version = '2.2.2'
+    navigation_version = '2.3.0'
 }
 
 dependencies {
@@ -42,13 +42,15 @@ task androidSourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'com.flownav'
-            artifactId = 'router'
-            version = '0.4.5'
-            artifact("$buildDir/outputs/aar/router-release.aar")
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.release
+                groupId = 'com.flownav'
+                artifactId = 'router'
+                version = '0.4.5'
+            }
         }
     }
 }
