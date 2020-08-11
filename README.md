@@ -1,4 +1,4 @@
-# FlowNav &nbsp;&nbsp; [![](https://androidweekly.net/issues/issue-397/badge)](https://androidweekly.net/issues/issue-397) ![](https://api.travis-ci.org/jeziellago/FlowNav.svg)
+# FlowNav &nbsp;&nbsp; [![](https://androidweekly.net/issues/issue-397/badge)](https://androidweekly.net/issues/issue-397) ![](https://github.com/jeziellago/FlowNav/workflows/DEPLOY/badge.svg?branch=master)
 
 FlowNav is a mobile library for Android that helps and provider a better way to make multi-modules navigation.
 
@@ -10,14 +10,11 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 
 ![](https://github.com/jeziellago/FlowNav/blob/master/sample/flownav.png)
 
-## FlowNav is Incremental Annotation Processor
-- Kotlin >= 1.3.50, enabled by default 
-- Use `kapt.incremental.apt=true` on `gradle.properties` if your Kotlin version is < 1.3.50
 ## Current Stable Version
 
 ```gradle
 // latest stable
-flownav_version = '0.4.5'
+flownav_version = '0.5.0'
 ```
 
 ## Start Now!
