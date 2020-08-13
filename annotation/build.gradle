@@ -1,5 +1,8 @@
-apply plugin: 'kotlin'
-apply plugin: 'maven-publish'
+plugins {
+    id("kotlin")
+    id("maven-publish")
+    id("com.jfrog.bintray") version "1.8.5"
+}
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -19,13 +22,45 @@ compileTestKotlin {
     }
 }
 
+task sourcesJar(type: Jar) {
+    getArchiveClassifier().set('sources')
+    from sourceSets.getByName("main").allSource
+}
+
 publishing {
     publications {
-        maven(MavenPublication) {
+        release(MavenPublication) {
             groupId = 'com.flownav'
             artifactId = 'annotation'
-            version = '0.4.5'
+            version = publish_version
             from components.java
+            artifact sourcesJar
+        }
+    }
+}
+
+if (hasProperty("user") && hasProperty("key")) {
+
+    bintray {
+
+        user = property("user")
+        key = property("key")
+
+        setPublications("release")
+
+        pkg {
+            name = "Annotation"
+            repo = "FlowNav"
+            websiteUrl = "https://github.com/jeziellago/FlowNav"
+            issueTrackerUrl = "https://github.com/jeziellago/FlowNav/issues"
+            vcsUrl = "https://github.com/jeziellago/FlowNav.git"
+            publicDownloadNumbers = true
+            setLicenses("Apache-2.0")
+            desc = "Android annotation processor and tools for providing better navigation on multi-modules projects."
+            version.name = publish_version
+            version.vcsTag = publish_version
+            publish = true
+            override = true
         }
     }
 }

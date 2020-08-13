@@ -1,9 +1,7 @@
 name: CI
-on:
-    push:
-        branches:
-            - master
-    pull_request:
+
+on: [push, pull_request]
+
 jobs:
     ci:
         name: Build + Test
@@ -12,4 +10,4 @@ jobs:
             - uses: actions/checkout@v1
             
             - name: Build Project
-              run: cd sample && ./gradlew build
+              run: cd sample && ./gradlew :app:assembleDebug && ./gradlew clean && ./gradlew :otherapp:assembleDebug

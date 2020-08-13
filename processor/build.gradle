@@ -1,6 +1,9 @@
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'maven-publish'
+plugins {
+    id("kotlin")
+    id("kotlin-kapt")
+    id("maven-publish")
+    id("com.jfrog.bintray") version "1.8.5"
+}
 
 kapt {
     correctErrorTypes = true
@@ -18,7 +21,6 @@ ext {
     autoservice = '1.0-rc6'
     incap_processor = '0.2'
     autocommon = '0.10'
-    kotlinpoet = '1.4.4'
 }
 
 
@@ -29,6 +31,7 @@ dependencies {
     compileOnly project(':annotation')
     compileOnly("net.ltgt.gradle.incap:incap:$incap_processor")
 
+    //noinspection AnnotationProcessorOnCompilePath
     implementation "com.google.auto.service:auto-service:$autoservice"
     implementation "com.google.auto:auto-common:$autocommon"
 
@@ -36,13 +39,45 @@ dependencies {
     kapt "com.google.auto.service:auto-service:$autoservice"
 }
 
+task sourcesJar(type: Jar) {
+    getArchiveClassifier().set('sources')
+    from sourceSets.getByName("main").allSource
+}
+
 publishing {
     publications {
-        maven(MavenPublication) {
+        release(MavenPublication) {
             groupId = 'com.flownav'
             artifactId = 'processor'
-            version = '0.4.5'
+            version = publish_version
             from components.java
+            artifact sourcesJar
+        }
+    }
+}
+
+if (hasProperty("user") && hasProperty("key")) {
+
+    bintray {
+
+        user = property("user")
+        key = property("key")
+
+        setPublications("release")
+
+        pkg {
+            name = "Processor"
+            repo = "FlowNav"
+            websiteUrl = "https://github.com/jeziellago/FlowNav"
+            issueTrackerUrl = "https://github.com/jeziellago/FlowNav/issues"
+            vcsUrl = "https://github.com/jeziellago/FlowNav.git"
+            publicDownloadNumbers = true
+            setLicenses("Apache-2.0")
+            desc = "Android annotation processor and tools for providing better navigation on multi-modules projects."
+            version.name = publish_version
+            version.vcsTag = publish_version
+            publish = true
+            override = true
         }
     }
 }
