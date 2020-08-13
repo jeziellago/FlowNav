@@ -35,13 +35,15 @@ class FlowNavActionsBuilder(
 
     private val template = """
         package com.flownav.router.extension
+        
         import com.flownav.router.EntryConfig
+        import android.app.Application
         import $PACKAGE_MARKER.R
         
-        fun android.content.Context.getEntryMap(): Map<String, EntryConfig> {
-            return HashMap<String, EntryConfig>().apply {
-            }//endmap
-        }
+        fun Application.getEntryMap(): Map<String, EntryConfig> = 
+            HashMap<String, EntryConfig>()
+                .apply {
+                }//end
         
     """.trimIndent()
 
@@ -53,16 +55,26 @@ class FlowNavActionsBuilder(
         val content = if (actionType.contains("*")) {
             val split: List<String> = actionType.split("*")
             file.readText().replace(
-                "}//endmap",
-                "\n\t\t\tthis[\"$action\"] = EntryConfig(\"${split[0]}\", R.id.${split[1]})\n\t\t}//endmap"
+                "}//end",
+                "\n\t\t\t${createEntryConfig(action, split.first(), split[1])}\n\t\t}//end"
             )
         } else {
             file.readText().replace(
-                "}//endmap",
-                "\n\t\t\tthis[\"$action\"] = EntryConfig(\"$actionType\")\n\t\t}//endmap"
+                "}//end",
+                "\n\t\t\t${createEntryConfig(action, actionType)}\n\t\t}//end"
             )
         }
         file.writeText(content)
+    }
+
+    private fun createEntryConfig(
+        action: String,
+        actionType: String,
+        idReference: String? = null
+    ): String = if (idReference != null) {
+        "this[\"$action\"] = EntryConfig(${actionType}::class.java.name, R.id.${idReference})"
+    } else {
+        "this[\"$action\"] = EntryConfig(${actionType}::class.java.name)"
     }
 
     companion object {

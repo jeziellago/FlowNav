@@ -1,0 +1,29 @@
+name: DEPLOY
+on:
+    push:
+        branches:
+            - master
+jobs:
+    ci:
+        name: Build & Deploy
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            
+            - name: Build Annotation
+              run: cd sample && ./gradlew :annotation:assemble
+
+            - name: Build Processor
+              run: cd sample && ./gradlew :processor:assemble
+
+            - name: Build Router
+              run: cd sample && ./gradlew :router:assembleRelease
+            
+            - name: Publish Annotation
+              run: cd sample && ./gradlew -Puser=${{ secrets.BINTRAY_USER }} -Pkey=${{ secrets.BINTRAY_TOKEN }} :annotation:bintrayUpload
+
+            - name: Publish Processor
+              run: cd sample && ./gradlew -Puser=${{ secrets.BINTRAY_USER }} -Pkey=${{ secrets.BINTRAY_TOKEN }} :processor:bintrayUpload
+
+            - name: Publish Router
+              run: cd sample && ./gradlew -Puser=${{ secrets.BINTRAY_USER }} -Pkey=${{ secrets.BINTRAY_TOKEN }} :router:bintrayUpload

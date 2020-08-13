@@ -1,11 +1,14 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'maven-publish'
+plugins {
+    id("com.android.library")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+    id("maven-publish")
+    id("com.jfrog.bintray") version "1.8.5"
+}
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
 
 
     defaultConfig {
@@ -28,7 +31,7 @@ android {
 }
 
 ext {
-    navigation_version = '2.2.2'
+    navigation_version = '2.3.0'
 }
 
 dependencies {
@@ -42,13 +45,42 @@ task androidSourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'com.flownav'
-            artifactId = 'router'
-            version = '0.4.5'
-            artifact("$buildDir/outputs/aar/router-release.aar")
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.flownav'
+                artifactId = 'router'
+                version = publish_version
+                artifact androidSourcesJar
+            }
+        }
+    }
+}
+
+if (hasProperty("user") && hasProperty("key")) {
+
+    bintray {
+
+        user = property("user")
+        key = property("key")
+
+        setPublications("release")
+
+        pkg {
+            name = "Router"
+            repo = "FlowNav"
+            websiteUrl = "https://github.com/jeziellago/FlowNav"
+            issueTrackerUrl = "https://github.com/jeziellago/FlowNav/issues"
+            vcsUrl = "https://github.com/jeziellago/FlowNav.git"
+            publicDownloadNumbers = true
+            setLicenses("Apache-2.0")
+            desc = "Android annotation processor and tools for providing better navigation on multi-modules projects."
+            version.name = publish_version
+            version.vcsTag = publish_version
+            publish = true
+            override = true
         }
     }
 }
