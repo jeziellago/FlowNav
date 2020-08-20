@@ -61,22 +61,28 @@ internal class FlowNavProcessingStep(
         val mainInitializer = mainFlowNavInitializerElements.first()
         val packageName = processingEnv.elementUtils.getPackageOf(mainInitializer).toString()
         val classBuilder = FlowNavActionsBuilder(generatedNavClass).openFile(packageName)
-
+        val mainMarker = "${packageName}_${mainInitializer.simpleName}$APP_MODULE_MARKER"
+        val mainMarkerFile = File(targetParentPath, mainMarker)
         val entryRegisters = File(targetParentPath).listFiles()
 
-        if(entryRegisters.isNullOrEmpty()) {
+        if (entryRegisters.isNullOrEmpty() ||
+            entryRegisters.any { it.name.contains(APP_MODULE_MARKER) && it.name != mainMarker }
+        ) {
+            File(targetParentPath).delete()
             processingEnv.messager.printMessage(
                 Diagnostic.Kind.ERROR,
-                "Invalid cache detected! Clean and rebuild your modules."
+                "Invalid cache detected! Clean modules and rebuild."
             )
             return
         }
 
-        entryRegisters.forEach { register ->
-            classBuilder
-                .addAction(register.name, register.readText())
-                .also { register.delete() }
-        }
+        entryRegisters
+            .filter {
+                !it.name.contains(APP_MODULE_MARKER)
+            }.forEach { register ->
+                classBuilder.addAction(register.name, register.readText())
+            }
+        mainMarkerFile.writeText(System.nanoTime().toString())
     }
 
     private fun createEntryFlowNavKeys(

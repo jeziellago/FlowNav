@@ -19,6 +19,7 @@ internal const val FLOWNAV_MAIN_MODULE_PROPERTY = "flownav.main.module"
 internal const val BUILD_TYPE_SOURCE = "build/generated/source"
 internal const val PATH_SEPARATOR = "/"
 internal const val APP_MODULE_SEPARATOR = ","
+internal const val APP_MODULE_MARKER = "_MARKER"
 
 internal fun ProcessingEnvironment.getKaptKotlinGeneratedDir(): String? {
     return options[KAPT_KOTLIN_GENERATED_OPTION_NAME] ?: run {
