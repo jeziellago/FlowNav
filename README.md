@@ -17,6 +17,37 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 flownav_version = '0.5.1'
 ```
 
+#### Processor
+
+```groovy
+dependencies {
+
+    kapt "com.flownav:processor:$flownav_version"
+}
+```
+
+#### Annotation
+
+```groovy
+dependencies {
+
+    implementation "com.flownav:annotation:$flownav_version"
+}
+```
+
+#### Router
+
+```groovy
+dependencies {
+
+    api "com.flownav:router:$flownav_version"
+}
+```
+
+>**`Router` dependency is imported only on the `navigation module`**.
+>
+>**All other modules will import the `Processor` and `Annotation` dependencies**
+
 ## Start Now!
 * [Import dependencies](https://github.com/jeziellago/FlowNav/wiki/Setup-Dependencies)
 * [Init FlowNavApp on Application](https://github.com/jeziellago/FlowNav/wiki/Start-FlowNav)
