@@ -45,7 +45,7 @@ task sourcesJar(type: Jar) {
 publishing {
     publications {
         release(MavenPublication) {
-            groupId = 'com.flownav'
+            groupId = publish_group
             artifactId = 'processor'
             version = publish_version
             from components.java

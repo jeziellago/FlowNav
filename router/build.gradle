@@ -38,7 +38,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.flownav'
+                groupId = publish_group
                 artifactId = 'router'
                 version = publish_version
                 artifact androidSourcesJar

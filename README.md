@@ -26,7 +26,7 @@ allprojects {
 ```groovy
 dependencies {
 
-    kapt "com.github.jeziellago:FlowNav:processor:$TAG"
+    kapt "com.github.jeziellago.FlowNav:processor:$TAG"
 }
 ```
 
@@ -35,7 +35,7 @@ dependencies {
 ```groovy
 dependencies {
 
-    implementation "com.github.jeziellago:FlowNav:annotation:$TAG"
+    implementation "com.github.jeziellago.FlowNav:annotation:$TAG"
 }
 ```
 
@@ -44,7 +44,7 @@ dependencies {
 ```groovy
 dependencies {
 
-    api "com.github.jeziellago:FlowNav:router:$TAG"
+    api "com.github.jeziellago.FlowNav:router:$TAG"
 }
 ```
 

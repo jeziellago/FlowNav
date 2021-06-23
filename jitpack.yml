@@ -7,3 +7,4 @@ install:
    - ./gradlew :processor:assemble
    - ./gradlew :router:assembleRelease
    - ./gradlew publishToMavenLocal  
+   - ls ~/.m2/repository/com/github/jeziellago/FlowNav

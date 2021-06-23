@@ -1,6 +1,7 @@
 buildscript {
     ext.kotlin_version = '1.5.0'
     ext.publish_version = '0.5.2'
+    ext.publish_group = 'com.github.jeziellago.FlowNav'
 
     repositories {
         mavenCentral()
