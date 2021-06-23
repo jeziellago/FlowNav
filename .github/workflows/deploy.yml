@@ -2,7 +2,7 @@ name: DEPLOY
 on:
     push:
         branches:
-            - master
+            - release
 jobs:
     ci:
         name: Build & Deploy
