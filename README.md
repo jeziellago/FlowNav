@@ -1,4 +1,5 @@
-# FlowNav &nbsp;&nbsp; [![](https://androidweekly.net/issues/issue-397/badge)](https://androidweekly.net/issues/issue-397) ![](https://github.com/jeziellago/FlowNav/workflows/DEPLOY/badge.svg?branch=master)
+# FlowNav &nbsp;&nbsp; [![](https://androidweekly.net/issues/issue-397/badge)](https://androidweekly.net/issues/issue-397) ![](https://github.com/jeziellago/FlowNav/workflows/DEPLOY/badge.svg?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/dev.jeziellago/flownav-annotation/badge.svg)](https://maven-badges.herokuapp.com/maven-central/dev.jeziellago/flownav-annotation)
+
 
 FlowNav is a mobile library for Android that helps and provider a better way to make multi-modules navigation.
 
@@ -9,17 +10,6 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 >**Check the [wiki](https://github.com/jeziellago/FlowNav/wiki).**
 
 ![](https://github.com/jeziellago/FlowNav/blob/master/sample/flownav.png)
-
-### Dependency
-Add `jitpack.io` as maven repository:
-```groovy
-allprojects {  
-    repositories {  
-        ...  
-        maven { url 'https://jitpack.io' }  
-    }  
-}  
-```
 
 #### Processor
 
