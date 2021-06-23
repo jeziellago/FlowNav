@@ -1,6 +1,5 @@
 plugins {
     id("kotlin")
-    id("maven-publish")
 }
 
 repositories {
@@ -17,19 +16,4 @@ compileTestKotlin {
     }
 }
 
-task sourcesJar(type: Jar) {
-    getArchiveClassifier().set('sources')
-    from sourceSets.getByName("main").allSource
-}
-
-publishing {
-    publications {
-        release(MavenPublication) {
-            groupId = publish_group
-            artifactId = 'annotation'
-            version = publish_version
-            from components.java
-            artifact sourcesJar
-        }
-    }
-}
+apply from: "$rootDir/publish.gradle"

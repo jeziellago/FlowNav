@@ -1,7 +1,6 @@
 plugins {
     id("kotlin")
     id("kotlin-kapt")
-    id("maven-publish")
 }
 
 kapt {
@@ -42,14 +41,4 @@ task sourcesJar(type: Jar) {
     from sourceSets.getByName("main").allSource
 }
 
-publishing {
-    publications {
-        release(MavenPublication) {
-            groupId = publish_group
-            artifactId = 'processor'
-            version = publish_version
-            from components.java
-            artifact sourcesJar
-        }
-    }
-}
+apply from: "$rootDir/publish.gradle"

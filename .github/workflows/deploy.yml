@@ -10,20 +10,23 @@ jobs:
         steps:
             - uses: actions/checkout@v1
             
-            - name: Build Annotation
-              run: cd sample && ./gradlew :annotation:assemble
+            - name: Prepare environment
+              env:
+                SONATYPE_GPG_FILE_CONTENT: ${{ secrets.SONATYPE_GPG_FILE_CONTENT }}
+                SIGN_GPG_FILE: ${{ secrets.SIGN_GPG_FILE }}
+              run:  |
+                sudo bash -c "echo '$SONATYPE_GPG_FILE_CONTENT' | base64 -d > '$SIGN_GPG_FILE'"
+                mv $SIGN_GPG_FILE sample/
 
-            - name: Build Processor
-              run: cd sample && ./gradlew :processor:assemble
-
-            - name: Build Router
-              run: cd sample && ./gradlew :router:assembleRelease
-            
-            - name: Publish Annotation
-              run: cd sample && ./gradlew :annotation:publishToMavenLocal
-
-            - name: Publish Processor
-              run: cd sample && ./gradlew :processor:publishToMavenLocal
+            - name: Build Release
+              run: cd sample; ./gradlew :annotation:assemble; ./gradlew :processor:assemble; ./gradlew :router:assembleRelease
 
             - name: Publish Router
-              run: cd sample && ./gradlew :router:publishToMavenLocal
+              env:
+                SIGN_ID: ${{ secrets.SIGN_ID }}
+                SIGN_PASSWORD: ${{ secrets.SIGN_PASSWORD }}
+                SIGN_GPG_FILE: ${{ secrets.SIGN_GPG_FILE }}
+                SONATYPE_ID: ${{ secrets.SONATYPE_ID }}
+                SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+                SONATYPE_PASS: ${{ secrets.SONATYPE_PASS }}
+              run: cd sample; ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository

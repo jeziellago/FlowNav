@@ -1,0 +1,77 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+def getRepositoryUsername() {
+    return findProperty('SONATYPE_NEXUS_USERNAME') ?: System.getenv('SONATYPE_NEXUS_USERNAME') ?: ""
+}
+
+def getRepositoryPassword() {
+    return findProperty('SONATYPE_NEXUS_PASSWORD') ?: System.getenv('SONATYPE_NEXUS_PASSWORD') ?: ""
+}
+
+if (!project.tasks.findByName('sourcesJar')) {
+    task sourcesJar(type: Jar) {
+        archiveClassifier.set('sources')
+        if (pluginManager.hasPlugin('com.android.library')) {
+            from android.sourceSets.main.java.srcDirs
+        } else {
+            from sourceSets.main.java.srcDirs
+        }
+    }
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                def lib_artifact_id = "flownav-${project.name}"
+                groupId = publish_group
+                artifactId = lib_artifact_id
+                version = publish_version
+                if (pluginManager.hasPlugin('com.android.library')) {
+                    from components.release
+                } else {
+                    from components.java
+                }
+                artifact sourcesJar
+
+                pom {
+                    name = lib_artifact_id
+                    description = 'Annotation processor that provides better navigation on android multi-modules projects'
+                    url = 'https://github.com/jeziellago/FlowNav'
+                    licenses {
+                        license {
+                            name = "The Apache Software License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'jeziellago'
+                            name = 'Jeziel Lago'
+                            email = 'jeziellago@gmail.com'
+                        }
+                    }
+
+                    scm {
+                        connection = 'scm:git:github.com/jeziellago/FlowNav.git'
+                        developerConnection = 'scm:git:ssh://github.com/jeziellago/FlowNav.git'
+                        url = 'https://github.com/jeziellago/FlowNav/tree/master'
+                    }
+                }
+            }
+        }
+    }
+
+    ext["signing.keyId"] = System.getenv('SIGN_ID') ?: ''
+    ext["signing.password"] = System.getenv('SIGN_PASSWORD') ?: ''
+    ext["signing.secretKeyRingFile"] = "$rootDir/${System.getenv('SIGN_GPG_FILE')}"
+
+    signing {
+        sign publishing.publications.release
+    }
+}
