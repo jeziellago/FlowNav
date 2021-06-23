@@ -2,7 +2,6 @@ plugins {
     id("kotlin")
     id("kotlin-kapt")
     id("maven-publish")
-    id("com.jfrog.bintray") version "1.8.5"
 }
 
 kapt {
@@ -18,14 +17,13 @@ sourceSets {
 }
 
 ext {
-    autoservice = '1.0-rc6'
-    incap_processor = '0.2'
+    autoservice = '1.0'
+    incap_processor = '0.3'
     autocommon = '0.10'
 }
 
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     annotationProcessor("net.ltgt.gradle.incap:incap-processor:$incap_processor")
 
     compileOnly project(':annotation')
@@ -52,32 +50,6 @@ publishing {
             version = publish_version
             from components.java
             artifact sourcesJar
-        }
-    }
-}
-
-if (hasProperty("user") && hasProperty("key")) {
-
-    bintray {
-
-        user = property("user")
-        key = property("key")
-
-        setPublications("release")
-
-        pkg {
-            name = "Processor"
-            repo = "FlowNav"
-            websiteUrl = "https://github.com/jeziellago/FlowNav"
-            issueTrackerUrl = "https://github.com/jeziellago/FlowNav/issues"
-            vcsUrl = "https://github.com/jeziellago/FlowNav.git"
-            publicDownloadNumbers = true
-            setLicenses("Apache-2.0")
-            desc = "Android annotation processor and tools for providing better navigation on multi-modules projects."
-            version.name = publish_version
-            version.vcsTag = publish_version
-            publish = true
-            override = true
         }
     }
 }

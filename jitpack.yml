@@ -1,0 +1,8 @@
+jdk:
+  - openjdk8
+before_install:
+   - cd sample; chmod +x gradlew 
+install:
+   - ./gradlew :annotation:assemble; ./gradlew :annotation:publishToMavenLocal 
+   - ./gradlew :processor:assemble; ./gradlew :processor:publishToMavenLocal
+   - ./gradlew :router:assembleRelease; ./gradlew :router:publishToMavenLocal  

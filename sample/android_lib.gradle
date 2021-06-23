@@ -19,9 +19,18 @@ android {
 }
 
 dependencies {
+    implementation project(':navigation')
+
+    // com.flownav:annotation:VERSION
+    implementation project(':annotation')
+
+    // com.flownav:processor:VERSION
+    kapt project(':processor')
+
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "androidx.core:core-ktx:$core_ktx"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout"
 
-    // com.flownav:router:VERSION
-    api project(':router')
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 }
