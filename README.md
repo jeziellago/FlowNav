@@ -10,11 +10,15 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 
 ![](https://github.com/jeziellago/FlowNav/blob/master/sample/flownav.png)
 
-## Current Stable Version
-
-```gradle
-// latest stable
-flownav_version = '0.5.1'
+### Dependency
+Add `jitpack.io` as maven repository:
+```groovy
+allprojects {  
+    repositories {  
+        ...  
+        maven { url 'https://jitpack.io' }  
+    }  
+}  
 ```
 
 #### Processor
@@ -22,7 +26,7 @@ flownav_version = '0.5.1'
 ```groovy
 dependencies {
 
-    kapt "com.flownav:processor:$flownav_version"
+    kapt "com.github.jeziellago:FlowNav:processor:$TAG"
 }
 ```
 
@@ -31,7 +35,7 @@ dependencies {
 ```groovy
 dependencies {
 
-    implementation "com.flownav:annotation:$flownav_version"
+    implementation "com.github.jeziellago:FlowNav:annotation:$TAG"
 }
 ```
 
@@ -40,7 +44,7 @@ dependencies {
 ```groovy
 dependencies {
 
-    api "com.flownav:router:$flownav_version"
+    api "com.github.jeziellago:FlowNav:router:$TAG"
 }
 ```
 

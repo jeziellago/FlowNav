@@ -3,6 +3,5 @@ jdk:
 before_install:
    - cd sample; chmod +x gradlew 
 install:
-   - ./gradlew :annotation:assemble; ./gradlew :annotation:publishToMavenLocal 
-   - ./gradlew :processor:assemble; ./gradlew :processor:publishToMavenLocal
-   - ./gradlew :router:assembleRelease; ./gradlew :router:publishToMavenLocal  
+   - ./gradlew :annotation:assemble; ./gradlew :processor:assemble; ./gradlew :router:assembleRelease; 
+   - ./gradlew publishToMavenLocal  
