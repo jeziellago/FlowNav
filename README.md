@@ -15,7 +15,7 @@ FlowNav is a mobile library for Android that helps and provider a better way to 
 ```groovy
 dependencies {
 
-    kapt "dev.jeziellago:flowNav-processor:$VERSION"
+    kapt "dev.jeziellago:flownav-processor:$VERSION"
 }
 ```
 
@@ -24,7 +24,7 @@ dependencies {
 ```groovy
 dependencies {
 
-    implementation "dev.jeziellago:flowNav-annotation:$VERSION"
+    implementation "dev.jeziellago:flownav-annotation:$VERSION"
 }
 ```
 
@@ -33,7 +33,7 @@ dependencies {
 ```groovy
 dependencies {
 
-    api "dev.jeziellago:flowNav-router:$VERSION"
+    api "dev.jeziellago:flownav-router:$VERSION"
 }
 ```
 
