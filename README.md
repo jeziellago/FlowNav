@@ -1,4 +1,4 @@
-# FlowNav &nbsp;&nbsp; [![](https://androidweekly.net/issues/issue-397/badge)](https://androidweekly.net/issues/issue-397) ![](https://github.com/jeziellago/FlowNav/workflows/CI/badge.svg?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/dev.jeziellago/flownav-annotation/badge.svg)](https://maven-badges.herokuapp.com/maven-central/dev.jeziellago/flownav-annotation)
+# FlowNav &nbsp;&nbsp; [![](https://androidweekly.net/issues/issue-397/badge)](https://androidweekly.net/issues/issue-397) ![](https://github.com/jeziellago/FlowNav/workflows/CI/badge.svg?branch=master) [![Maven Central](https://img.shields.io/maven-central/v/dev.jeziellago/flownav-annotation.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22dev.jeziellago%22%20AND%20a:%22flownav-annotation%22)
 
 FlowNav is a mobile library for Android that helps and provider a better way to make multi-modules navigation.
 
